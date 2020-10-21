@@ -16,7 +16,13 @@ my $url_regex = qr|((https?)(?:(://)?([^/?#\s]*))?([^?#\s'"!;:+]*)(?:\?([^#\s]*)
 
 # TODO
 sub extract_urls_with_indices {
-    my $text = shift;
+    my ($text, $options) = @_;
+    $options ||= {
+        extract_url_without_protocol => 1,
+    };
+
+    return [] unless $text && ($options->{extract_url_without_protocol} ? $text =~ /\./ : $text =~ /:/);
+
     my $urls = [];
 
     while ($text =~ /$url_regex/g) {
