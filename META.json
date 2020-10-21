@@ -47,6 +47,7 @@
       },
       "test" : {
          "requires" : {
+            "Test2::Plugin::GitHub::Actions::AnnotateFailedTest" : "0",
             "Test::More" : "0.98"
          }
       }
