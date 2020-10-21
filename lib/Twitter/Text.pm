@@ -25,8 +25,8 @@ sub extract_urls_with_indices {
 
     while ($text =~ /($Twitter::Text::Regexp::valid_url)/g) {
         push @$urls, {
-            url => $1,
-            indices => [ $-[0], $+[0] ],
+            url => $4,
+            indices => [ $-[4], $+[4] ],
         };
     }
 
