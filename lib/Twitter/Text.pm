@@ -2,10 +2,23 @@ package Twitter::Text;
 use 5.008001;
 use strict;
 use warnings;
+use Exporter 'import';
 
 our $VERSION = "0.01";
+our @EXPORT = qw(parse_tweet);
 
-
+# TODO
+sub parse_tweet {
+    return +{
+        weightedLength => 0,
+        valid => 0,
+        permillage => 0,
+        displayRangeStart => 0,
+        displayRangeEnd => 0,
+        validRangeStart => 0,
+        validRangeEnd => 0,
+    };
+}
 
 1;
 __END__
