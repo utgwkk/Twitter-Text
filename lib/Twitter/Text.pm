@@ -6,13 +6,11 @@ use utf8;
 use constant MAX_WEIGHTENED_LENGTH => 280;
 use Exporter 'import';
 use List::Util qw(min);
+use Twitter::Text::Regexp;
 use Unicode::Normalize qw(NFC);
 
 our $VERSION = "0.01";
 our @EXPORT = qw(parse_tweet extract_urls_with_indices);
-
-# see also: perldoc URI
-my $url_regex = qr|((https?)(?:(://)?([^/?#\s]*))?([^?#\s'"!;:+]*)(?:\?([^#\s]*))?(?:#(.*))?)|;
 
 # TODO
 sub extract_urls_with_indices {
@@ -25,7 +23,7 @@ sub extract_urls_with_indices {
 
     my $urls = [];
 
-    while ($text =~ /$url_regex/g) {
+    while ($text =~ /($Twitter::Text::Regexp::valid_url)/g) {
         push @$urls, {
             url => $1,
             indices => [ $-[0], $+[0] ],
