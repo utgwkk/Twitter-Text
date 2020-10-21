@@ -5,6 +5,7 @@ use warnings;
 use utf8;
 use constant MAX_WEIGHTENED_LENGTH => 280;
 use Exporter 'import';
+use List::Util qw(min);
 
 our $VERSION = "0.01";
 our @EXPORT = qw(parse_tweet);
@@ -16,7 +17,7 @@ sub parse_tweet {
     my $valid = $weighted_length <= MAX_WEIGHTENED_LENGTH ? 1 : 0;
     my $permilage = int($weighted_length / MAX_WEIGHTENED_LENGTH * 1000); # TODO
     my $display_range_end = $weighted_length - 1; # TODO
-    my $valid_range_end = $weighted_length - 1; # TODO
+    my $valid_range_end = min($weighted_length, MAX_WEIGHTENED_LENGTH) - 1; # TODO
 
     return +{
         weightedLength => $weighted_length,
