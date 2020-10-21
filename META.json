@@ -42,13 +42,17 @@
       },
       "runtime" : {
          "requires" : {
+            "Exporter" : "0",
             "perl" : "5.008001"
          }
       },
       "test" : {
          "requires" : {
+            "FindBin" : "0",
             "Test2::Plugin::GitHub::Actions::AnnotateFailedTest" : "0",
-            "Test::More" : "0.98"
+            "Test2::V0" : "0",
+            "Test::More" : "0.98",
+            "YAML::Tiny" : "0"
          }
       }
    },
