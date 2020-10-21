@@ -1,6 +1,7 @@
 requires 'perl', '5.008001';
 requires 'Exporter';
 requires 'List::Util';
+requires 'Unicode::Normalize';
 
 on 'test' => sub {
     requires 'FindBin';

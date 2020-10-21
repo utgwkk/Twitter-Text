@@ -6,14 +6,16 @@ use utf8;
 use constant MAX_WEIGHTENED_LENGTH => 280;
 use Exporter 'import';
 use List::Util qw(min);
+use Unicode::Normalize qw(NFC);
 
 our $VERSION = "0.01";
 our @EXPORT = qw(parse_tweet);
 
 sub parse_tweet {
     my $tweet = shift;
+    my $normalized_tweet = NFC($tweet);
 
-    my $weighted_length = length $tweet; # TODO
+    my $weighted_length = length $normalized_tweet; # TODO
     my $valid = $weighted_length <= MAX_WEIGHTENED_LENGTH ? 1 : 0;
     my $permilage = int($weighted_length / MAX_WEIGHTENED_LENGTH * 1000); # TODO
     my $display_range_end = $weighted_length - 1; # TODO
