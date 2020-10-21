@@ -9,7 +9,25 @@ use List::Util qw(min);
 use Unicode::Normalize qw(NFC);
 
 our $VERSION = "0.01";
-our @EXPORT = qw(parse_tweet);
+our @EXPORT = qw(parse_tweet extract_urls_with_indices);
+
+# see also: perldoc URI
+my $url_regex = qr|((https?)(?:(://)?([^/?#\s]*))?([^?#\s'"!;:+]*)(?:\?([^#\s]*))?(?:#(.*))?)|;
+
+# TODO
+sub extract_urls_with_indices {
+    my $text = shift;
+    my $urls = [];
+
+    while ($text =~ /$url_regex/g) {
+        push @$urls, {
+            url => $1,
+            indices => [ $-[0], $+[0] ],
+        };
+    }
+
+    return $urls;
+}
 
 sub parse_tweet {
     my $tweet = shift;
