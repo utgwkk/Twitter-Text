@@ -2,21 +2,30 @@ package Twitter::Text;
 use 5.008001;
 use strict;
 use warnings;
+use utf8;
+use constant MAX_WEIGHTENED_LENGTH => 280;
 use Exporter 'import';
 
 our $VERSION = "0.01";
 our @EXPORT = qw(parse_tweet);
 
-# TODO
 sub parse_tweet {
+    my $tweet = shift;
+
+    my $weighted_length = length $tweet; # TODO
+    my $valid = $weighted_length <= MAX_WEIGHTENED_LENGTH ? 1 : 0;
+    my $permilage = int($weighted_length / MAX_WEIGHTENED_LENGTH * 1000); # TODO
+    my $display_range_end = $weighted_length - 1; # TODO
+    my $valid_range_end = $weighted_length - 1; # TODO
+
     return +{
-        weightedLength => 0,
-        valid => 0,
-        permillage => 0,
+        weightedLength => $weighted_length,
+        valid => $valid,
+        permillage => $permilage,
         displayRangeStart => 0,
-        displayRangeEnd => 0,
+        displayRangeEnd => $display_range_end,
         validRangeStart => 0,
-        validRangeEnd => 0,
+        validRangeEnd => $valid_range_end,
     };
 }
 
