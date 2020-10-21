@@ -2,6 +2,7 @@ package Twitter::Text::Regexp;
 use strict;
 use warnings;
 use utf8;
+use Path::Tiny qw(path);
 use YAML::Tiny;
 
 sub regex_range {
@@ -14,7 +15,7 @@ sub regex_range {
     }
 }
 
-our $TLDS = YAML::Tiny->read("../../twitter-text/conformance/tld_lib.yml")->[0];
+our $TLDS = YAML::Tiny->read(path(__FILE__)->parent->parent->parent->parent->parent->child("twitter-text/conformance/tld_lib.yml")->stringify)->[0];
 our $PUNCTUATION_CHARS = '!"#$%&\'()*+,-./:;<=>?@\[\]^_\`{|}~';
 our $SPACE_CHARS = " \t\n\x0B\f\r";
 our $CTRL_CHARS = "\x00-\x1F\x7F";
