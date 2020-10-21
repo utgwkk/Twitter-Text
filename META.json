@@ -52,6 +52,17 @@
       }
    },
    "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/utgwkk/Twitter-Text/issues"
+      },
+      "homepage" : "https://github.com/utgwkk/Twitter-Text",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/utgwkk/Twitter-Text.git",
+         "web" : "https://github.com/utgwkk/Twitter-Text"
+      }
+   },
    "version" : "0.01",
    "x_serialization_backend" : "JSON::PP version 4.02",
    "x_static_install" : 1
