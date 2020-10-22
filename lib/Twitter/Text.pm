@@ -120,6 +120,8 @@ sub parse_tweet {
     my $tweet = shift;
     my $normalized_tweet = NFC($tweet);
 
+    return _empty_parse_results() unless length $normalized_tweet > 0;
+
     my $weighted_length = length $normalized_tweet; # TODO
     my $valid = $weighted_length <= MAX_WEIGHTENED_LENGTH ? 1 : 0;
     my $permilage = int($weighted_length / MAX_WEIGHTENED_LENGTH * 1000); # TODO
@@ -134,6 +136,18 @@ sub parse_tweet {
         displayRangeEnd => $display_range_end,
         validRangeStart => 0,
         validRangeEnd => $valid_range_end,
+    };
+}
+
+sub _empty_parse_results {
+    return {
+        weightedLength => 0,
+        valid => 1,
+        permillage => 0,
+        displayRangeStart => 0,
+        displayRangeEnd => 0,
+        validRangeStart => 0,
+        validRangeEnd => 0,
     };
 }
 
