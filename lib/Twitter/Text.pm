@@ -17,7 +17,13 @@ use Twitter::Text::Regexp;
 use Unicode::Normalize qw(NFC);
 
 our $VERSION = "0.01";
-our @EXPORT = qw(parse_tweet extract_urls_with_indices);
+our @EXPORT = qw(parse_tweet extract_urls extract_urls_with_indices);
+
+sub extract_urls {
+    my ($text) = @_;
+    my $urls = extract_urls_with_indices($text);
+    return [ map { $_->{url} } @$urls ];
+}
 
 sub extract_urls_with_indices {
     my ($text, $options) = @_;
