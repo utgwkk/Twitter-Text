@@ -14,10 +14,26 @@ use Exporter 'import';
 use List::Util qw(min);
 use Net::IDN::Encode ':all';
 use Twitter::Text::Regexp;
+use Twitter::Text::Regexp::Emoji;
 use Unicode::Normalize qw(NFC);
 
 our $VERSION = "0.01";
 our @EXPORT = qw(parse_tweet extract_urls extract_urls_with_indices);
+
+sub extract_emoji_with_indices {
+    my ($text) = @_;
+    my $emoji = [];
+    while ($text =~ /($Twitter::Text::Regexp::Emoji::valid_emoji)/g) {
+        my $emoji_text = $1;
+        my $start_position = $-[1];
+        my $end_position = $+[1];
+        push @$emoji, {
+            emoji => $emoji_text,
+            indices => [ $start_position, $end_position ],
+        };
+    }
+    return $emoji;
+}
 
 sub extract_urls {
     my ($text) = @_;
