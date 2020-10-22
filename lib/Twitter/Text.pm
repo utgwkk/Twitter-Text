@@ -67,7 +67,7 @@ sub extract_urls_with_indices {
             }
         } else {
             if ($url =~ /($Twitter::Text::Regexp::valid_tco_url)/) {
-                next if $1 && length $1 > MAX_TCO_SLUG_LENGTH;
+                next if $2 && length $2 >= MAX_TCO_SLUG_LENGTH;
                 $url = $1;
                 $end = $start + length $url;
             }
