@@ -117,12 +117,12 @@ sub is_valid_domain {
 }
 
 sub parse_tweet {
-    my $tweet = shift;
-    my $normalized_tweet = NFC($tweet);
+    my $text = shift;
+    my $normalized_text = NFC($text);
 
-    return _empty_parse_results() unless length $normalized_tweet > 0;
+    return _empty_parse_results() unless length $normalized_text > 0;
 
-    my $weighted_length = length $normalized_tweet; # TODO
+    my $weighted_length = length $normalized_text; # TODO
     my $valid = $weighted_length <= MAX_WEIGHTENED_LENGTH ? 1 : 0;
     my $permilage = int($weighted_length / MAX_WEIGHTENED_LENGTH * 1000); # TODO
     my $display_range_end = $weighted_length - 1; # TODO
