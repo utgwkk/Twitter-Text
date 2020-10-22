@@ -4,6 +4,9 @@ use strict;
 use warnings;
 use utf8;
 use constant {
+    DEFAULT_TCO_URL_LENGTHS => {
+        short_url_length => 23
+    },
     MAX_WEIGHTENED_LENGTH => 280,
     MAX_URL_LENGTH => 4096,
     MAX_TCO_SLUG_LENGTH => 40,
@@ -13,6 +16,7 @@ use Carp qw(croak);
 use Exporter 'import';
 use List::Util qw(min);
 use Net::IDN::Encode ':all';
+use Twitter::Text::Configuration;
 use Twitter::Text::Regexp;
 use Twitter::Text::Regexp::Emoji;
 use Unicode::Normalize qw(NFC);
@@ -117,7 +121,13 @@ sub is_valid_domain {
 }
 
 sub parse_tweet {
-    my $text = shift;
+    my ($text, $options) = @_;
+    # merge options
+    $options ||= {};
+    $options->{$_} = DEFAULT_TCO_URL_LENGTHS()->{$_} for keys %{ DEFAULT_TCO_URL_LENGTHS() };
+
+    my $config = $options->{config} || Twitter::Text::Configuration::default_configuration;
+
     my $normalized_text = NFC($text);
 
     return _empty_parse_results() unless length $normalized_text > 0;
