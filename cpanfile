@@ -1,6 +1,8 @@
 requires 'perl', '5.008001';
+requires 'Carp';
 requires 'Exporter';
 requires 'List::Util';
+requires 'Net::IDN::Encode';
 requires 'Path::Tiny';
 requires 'Unicode::Normalize';
 

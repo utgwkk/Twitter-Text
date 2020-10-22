@@ -113,6 +113,7 @@ our $valid_tco_url = qr/^https?:\/\/t\.co\/([a-z0-9]+)/i;
 our $valid_port_number = qr/[0-9]+/;
 
 our $valid_url_preceding_chars = qr/(?:[^A-Z0-9@＠\$#＃$INVALID_CHARACTERS]|[$DIRECTIONAL_CHARACTERS]|^)/io;
+our $invalid_url_without_protocol_preceding_chars = qr/[-_.\/]$/;
 
 our $valid_general_url_path_chars = qr/[a-z\p{Cyrillic}0-9!\*';:=\+\,\.\$\/%#\[\]\p{Pd}_~&\|$LATIN_ACCENTS]/io;
 # Allow URL paths to contain up to two nested levels of balanced parens

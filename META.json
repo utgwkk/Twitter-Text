@@ -42,8 +42,10 @@
       },
       "runtime" : {
          "requires" : {
+            "Carp" : "0",
             "Exporter" : "0",
             "List::Util" : "0",
+            "Net::IDN::Encode" : "0",
             "Path::Tiny" : "0",
             "Unicode::Normalize" : "0",
             "perl" : "5.008001"

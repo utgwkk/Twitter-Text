@@ -3,16 +3,22 @@ use 5.008001;
 use strict;
 use warnings;
 use utf8;
-use constant MAX_WEIGHTENED_LENGTH => 280;
+use constant {
+    MAX_WEIGHTENED_LENGTH => 280,
+    MAX_URL_LENGTH => 4096,
+    MAX_TCO_SLUG_LENGTH => 40,
+    URL_PROTOCOL_LENGTH => length 'https://',
+};
+use Carp qw(croak);
 use Exporter 'import';
 use List::Util qw(min);
+use Net::IDN::Encode ':all';
 use Twitter::Text::Regexp;
 use Unicode::Normalize qw(NFC);
 
 our $VERSION = "0.01";
 our @EXPORT = qw(parse_tweet extract_urls_with_indices);
 
-# TODO
 sub extract_urls_with_indices {
     my ($text, $options) = @_;
     $options ||= {
@@ -24,13 +30,65 @@ sub extract_urls_with_indices {
     my $urls = [];
 
     while ($text =~ /($Twitter::Text::Regexp::valid_url)/g) {
-        push @$urls, {
-            url => $4,
-            indices => [ $-[4], $+[4] ],
-        };
+        my $before = $3;
+        my $url = $4;
+        my $protocol = $5;
+        my $domain = $6;
+        my $path = $8;
+        my ($start, $end) = ($-[4], $+[4]);
+
+        if (!$protocol) {
+            next if !$options->{extract_url_without_protocol} || $before =~ $Twitter::Text::Regexp::invalid_url_without_protocol_preceding_chars;
+            my $last_url;
+            while ($domain =~ /($Twitter::Text::Regexp::valid_ascii_domain)/g) {
+                my $ascii_domain = $1;
+                next unless is_valid_domain(length $url, $ascii_domain, $protocol);
+                $last_url = {
+                    url => $ascii_domain,
+                    indices => [ $start + $-[0], $start + $+[0] ],
+                };
+                push @$urls, $last_url;
+            }
+
+            # no ASCII-only domain found. Skip the entire URL
+            next unless $last_url;
+
+            # last_url only contains domain. Need to add path and query if they exist.
+            if ($path) {
+                # last_url was not added. Add it to urls here.
+                $last_url->{url} = $url =~ s/$domain/$last_url->{url}/re;
+                $last_url->{indices}->[1] = $end;
+            }
+        } else {
+            if ($url =~ /($Twitter::Text::Regexp::valid_tco_url)/) {
+                next if $1 && length $1 > MAX_TCO_SLUG_LENGTH;
+                $url = $1;
+                $end = $start + length $url;
+            }
+
+            next unless is_valid_domain(length $url, $domain, $protocol);
+
+            push @$urls, {
+                url => $url,
+                indices => [ $start, $end ],
+            };
+
+        }
     }
 
     return $urls;
+}
+
+sub is_valid_domain {
+    my ($url_length, $domain, $protocol) = @_;
+    croak 'invalid empty domain' unless $domain;
+
+    my $original_domain_length = length $domain;
+    my $encoded_domain = domain_to_ascii($domain);
+    my $updated_domain_length = length $encoded_domain;
+    $url_length += $updated_domain_length - $original_domain_length if $updated_domain_length > $original_domain_length;
+    $url_length += URL_PROTOCOL_LENGTH unless $protocol;
+    return $url_length <= MAX_URL_LENGTH;
 }
 
 sub parse_tweet {
