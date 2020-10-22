@@ -126,26 +126,98 @@ sub parse_tweet {
     $options ||= {};
     $options->{$_} = DEFAULT_TCO_URL_LENGTHS()->{$_} for keys %{ DEFAULT_TCO_URL_LENGTHS() };
 
-    my $config = $options->{config} || Twitter::Text::Configuration::default_configuration;
-
     my $normalized_text = NFC($text);
 
     return _empty_parse_results() unless length $normalized_text > 0;
 
-    my $weighted_length = length $normalized_text; # TODO
-    my $valid = $weighted_length <= MAX_WEIGHTENED_LENGTH ? 1 : 0;
-    my $permilage = int($weighted_length / MAX_WEIGHTENED_LENGTH * 1000); # TODO
-    my $display_range_end = $weighted_length - 1; # TODO
-    my $valid_range_end = min($weighted_length, MAX_WEIGHTENED_LENGTH) - 1; # TODO
+    my $config = $options->{config} || Twitter::Text::Configuration::default_configuration;
+    my $scale = $config->{scale};
+    my $max_weighted_tweet_length = $config->{maxWeightedTweetLength};
+    my $scaled_max_weighted_tweet_length = $max_weighted_tweet_length * $scale;
+    my $transformed_url_length = $config->{transformedURLLength} * $scale;
+    my $ranges = $config->{ranges};
+
+    my $url_entities = extract_urls_with_indices($normalized_text);
+    my $emoji_entities = $config->{emojiParsingEnabled} ? extract_emoji_with_indices($normalized_text) : [];
+
+    my $has_invalid_chars = 0;
+    my $weighted_count = 0;
+    my $offset = 0;
+    my $display_offset = 0;
+    my $valid_offset = 0;
+
+    while ($offset < length $normalized_text) {
+        my $char_weight = $config->{defaultWeight};
+        my $entity_length = 0;
+
+        for my $url_entity (@$url_entities) {
+            if ($url_entity->{indices}->[0] == $offset) {
+                $entity_length = $url_entity->{indices}->[1] - $url_entity->{indices}->[0];
+                $weighted_count += $transformed_url_length;
+                $offset += $entity_length;
+                $display_offset += $entity_length;
+                if ($weighted_count <= $scaled_max_weighted_tweet_length){
+                    $valid_offset += $entity_length;
+                }
+                # Finding a match breaks the loop
+                last;
+            }
+        }
+
+        for my $emoji_entity (@$emoji_entities) {
+            if ($emoji_entity->{indices}->[0] == $offset) {
+                $entity_length = $emoji_entity->{indices}->[1] - $emoji_entity->{indices}->[0];
+                $weighted_count += $char_weight; # the default weight
+                $offset += $entity_length;
+                $display_offset += $entity_length;
+                if ($weighted_count <= $scaled_max_weighted_tweet_length) {
+                    $valid_offset += $entity_length;
+                }
+                # Finding a match breaks the loop
+                last;
+            }
+        }
+
+        next if $entity_length > 0;
+
+        if ($offset < length $normalized_text) {
+            my $code_point = substr $normalized_text, $offset, 1;
+
+            for my $range (@$ranges) {
+                my ($chr) = unpack 'U', $code_point;
+                my ($range_start, $range_end) = ($range->{start}, $range->{end});
+                if ($range_start <= $chr && $chr <= $range_end) {
+                    $char_weight = $range->{weight};
+                    last;
+                }
+            }
+
+            $weighted_count += $char_weight;
+
+            $has_invalid_chars = _contains_invalid($code_point);
+            my $codepoint_length = length $code_point;
+            $offset += $codepoint_length;
+            $display_offset += $codepoint_length;
+
+            if (!$has_invalid_chars && ($weighted_count < $scaled_max_weighted_tweet_length)) {
+                $valid_offset += $codepoint_length;
+            }
+        }
+    }
+
+    my $normalized_text_offset = length($text) - length($normalized_text);
+    my $scaled_weighted_length = $weighted_count / $scale;
+    my $is_valid = !$has_invalid_chars && ($scaled_weighted_length <= $max_weighted_tweet_length);
+    my $permilage = int($scaled_weighted_length * 1000 / $max_weighted_tweet_length);
 
     return +{
-        weightedLength => $weighted_length,
-        valid => $valid,
+        weightedLength => $scaled_weighted_length,
+        valid => $is_valid ? 1 : 0,
         permillage => $permilage,
         displayRangeStart => 0,
-        displayRangeEnd => $display_range_end,
+        displayRangeEnd => $display_offset + $normalized_text_offset - 1,
         validRangeStart => 0,
-        validRangeEnd => $valid_range_end,
+        validRangeEnd => $valid_offset + $normalized_text_offset - 1,
     };
 }
 
@@ -159,6 +231,13 @@ sub _empty_parse_results {
         validRangeStart => 0,
         validRangeEnd => 0,
     };
+}
+
+sub _contains_invalid {
+    my ($text) = @_;
+
+    return 0 if !$text || length $text == 0;
+    return $text =~ qr/[$Twitter::Text::Regexp::INVALID_CHARACTERS]/;
 }
 
 1;
