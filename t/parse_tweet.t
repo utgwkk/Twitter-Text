@@ -1,10 +1,9 @@
 use Test2::V0;
-use FindBin;
-use YAML::Tiny;
 
+use Twitter::Text::Util;
 use Twitter::Text;
 
-my $yaml = YAML::Tiny->read("$FindBin::Bin/../twitter-text/conformance/validate.yml");
+my $yaml = load_yaml("validate.yml");
 my $testcases = $yaml->[0]->{tests}->{WeightedTweetsCounterTest};
 
 for my $testcase (@$testcases) {

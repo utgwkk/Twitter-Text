@@ -1,10 +1,9 @@
 use Test2::V0;
-use FindBin;
-use YAML::Tiny;
 
+use Twitter::Text::Util;
 use Twitter::Text;
 
-my $yaml = YAML::Tiny->read("$FindBin::Bin/../twitter-text/conformance/extract.yml");
+my $yaml = load_yaml("extract.yml");
 
 subtest extract_urls => sub {
     my $testcases = $yaml->[0]->{tests}->{urls};
