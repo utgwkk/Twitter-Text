@@ -4,8 +4,12 @@ use warnings;
 use JSON::XS ();
 use Path::Tiny qw(path);
 
+my %config_cache;
+
 sub configuration_from_file {
     my $config_name = shift;
+
+    return $config_cache{$config_name} if exists $config_cache{$config_name};
 
     my @path_candidates = (
         # ../../../twitter-text/conformance/config/$config_name.json
@@ -17,7 +21,7 @@ sub configuration_from_file {
 
     for my $path (@path_candidates) {
         next unless $path->is_file;
-        return JSON::XS::decode_json($path->slurp);
+        return $config_cache{$config_name} ||= JSON::XS::decode_json($path->slurp);
     }
 
     die "$config_name not found";
