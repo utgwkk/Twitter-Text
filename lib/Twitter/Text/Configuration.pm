@@ -13,10 +13,10 @@ sub configuration_from_file {
 
     my @path_candidates = (
         # ../../../twitter-text/conformance/config/$config_name.json
-        path(__FILE__)->parent->parent->parent->parent->child("twitter-text/conformance/config/$config_name.json"),
+        path(__FILE__)->parent->parent->parent->parent->child("twitter-text/config/$config_name.json"),
         # ../../../../twitter-text/conformance/config/$config_name.json
         # for `minil test`
-        path(__FILE__)->parent->parent->parent->parent->parent->child("twitter-text/conformance/config/$config_name.json"),
+        path(__FILE__)->parent->parent->parent->parent->parent->child("twitter-text/config/$config_name.json"),
     );
 
     for my $path (@path_candidates) {
