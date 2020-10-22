@@ -44,6 +44,7 @@
          "requires" : {
             "Carp" : "0",
             "Exporter" : "0",
+            "JSON::XS" : "0",
             "List::Util" : "0",
             "Net::IDN::Encode" : "0",
             "Path::Tiny" : "0",

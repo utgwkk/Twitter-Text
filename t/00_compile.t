@@ -4,6 +4,7 @@ use Test2::Plugin::GitHub::Actions::AnnotateFailedTest;
 
 use_ok $_ for qw(
     Twitter::Text
+    Twitter::Text::Configuration
     Twitter::Text::Regexp
     Twitter::Text::Regexp::Emoji
 );
