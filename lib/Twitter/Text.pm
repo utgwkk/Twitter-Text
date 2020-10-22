@@ -194,7 +194,7 @@ sub parse_tweet {
 
             $weighted_count += $char_weight;
 
-            $has_invalid_chars = _contains_invalid($code_point);
+            $has_invalid_chars = _contains_invalid($code_point) unless $has_invalid_chars;
             my $codepoint_length = length $code_point;
             $offset += $codepoint_length;
             $display_offset += $codepoint_length;
