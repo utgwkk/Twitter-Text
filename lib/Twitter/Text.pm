@@ -90,7 +90,10 @@ sub is_valid_domain {
     croak 'invalid empty domain' unless $domain;
 
     my $original_domain_length = length $domain;
-    my $encoded_domain = domain_to_ascii($domain);
+    my $encoded_domain = eval { domain_to_ascii($domain) };
+    if ($@) {
+        return 0;
+    }
     my $updated_domain_length = length $encoded_domain;
     $url_length += $updated_domain_length - $original_domain_length if $updated_domain_length > $original_domain_length;
     $url_length += URL_PROTOCOL_LENGTH unless $protocol;
