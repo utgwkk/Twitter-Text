@@ -199,7 +199,7 @@ sub parse_tweet {
             $offset += $codepoint_length;
             $display_offset += $codepoint_length;
 
-            if (!$has_invalid_chars && ($weighted_count < $scaled_max_weighted_tweet_length)) {
+            if (!$has_invalid_chars && ($weighted_count <= $scaled_max_weighted_tweet_length)) {
                 $valid_offset += $codepoint_length;
             }
         }
