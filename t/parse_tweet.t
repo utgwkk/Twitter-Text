@@ -4,12 +4,9 @@ use Test2::Plugin::GitHub::Actions::AnnotateFailedTest;
 use Twitter::Text::Util;
 use Twitter::Text;
 
-my $yaml = load_yaml("validate.yml");
-my $testcases = $yaml->[0]->{tests}->{WeightedTweetsCounterTest};
-
-for my $testcase (@$testcases) {
-    my $parse_result = parse_tweet($testcase->{text});
-    is $parse_result, hash {
+sub expected_parse_result {
+    my $testcase = shift;
+    hash {
         field weightedLength => $testcase->{expected}->{weightedLength};
         field valid => bool($testcase->{expected}->{valid} eq 'true');
         field permillage => $testcase->{expected}->{permillage};
@@ -18,7 +15,15 @@ for my $testcase (@$testcases) {
         field validRangeStart => $testcase->{expected}->{validRangeStart};
         field validRangeEnd => $testcase->{expected}->{validRangeEnd};
         etc;
-    }, $testcase->{description};
+    };
+}
+
+my $yaml = load_yaml("validate.yml");
+my $testcases = $yaml->[0]->{tests}->{WeightedTweetsCounterTest};
+
+for my $testcase (@$testcases) {
+    my $parse_result = parse_tweet($testcase->{text});
+    is $parse_result, expected_parse_result($testcase), $testcase->{description};
 }
 
 done_testing;
