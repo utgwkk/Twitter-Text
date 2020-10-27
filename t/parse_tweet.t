@@ -19,7 +19,7 @@ sub expected_parse_result {
 }
 
 my $yaml = load_yaml("validate.yml");
-my $testcases = $yaml->[0]->{tests}->{WeightedTweetsCounterTest};
+my $testcases = $yaml->[0]->{tests}->{WeightedTweetsWithDiscountedEmojiCounterTest};
 
 for my $testcase (@$testcases) {
     my $parse_result = parse_tweet($testcase->{text});
