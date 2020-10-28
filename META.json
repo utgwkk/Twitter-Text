@@ -47,6 +47,7 @@
             "File::Share" : "0",
             "JSON::XS" : "0",
             "List::Util" : "0",
+            "List::UtilsBy" : "0",
             "Net::IDN::Encode" : "0",
             "Path::Tiny" : "0",
             "Unicode::Normalize" : "0",
