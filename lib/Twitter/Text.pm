@@ -340,6 +340,14 @@ Please refer L<Implementation progress|https://github.com/utgwkk/Twitter-Text/is
 
 =head2 Extraction
 
+=head3 extract_hashtags
+
+    my \@hashtags = extract_hashtags($text);
+
+=head3 extract_hashtags_with_indices
+
+    my \@hashtags_with_indices = extract_hashtags_with_indices($text, [\%options]);
+
 =head3 extract_urls
 
     my \@urls = extract_urls($text);

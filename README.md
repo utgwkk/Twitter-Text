@@ -23,6 +23,14 @@ Please refer [Implementation progress](https://github.com/utgwkk/Twitter-Text/is
 
 ## Extraction
 
+### extract\_hashtags
+
+    my \@hashtags = extract_hashtags($text);
+
+### extract\_hashtags\_with\_indices
+
+    my \@hashtags_with_indices = extract_hashtags_with_indices($text, [\%options]);
+
 ### extract\_urls
 
     my \@urls = extract_urls($text);
