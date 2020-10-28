@@ -7,7 +7,8 @@ use Twitter::Text;
 
 sub convert_yaml_unicode_literal {
     my $text = shift;
-    $text =~ s/\\u([0-9a-f]+)/"\"\\N{U+$1}\""/eegi;
+    $text =~ s/\\u([0-9a-fA-F]{4})/"\"\\N{U+$1}\""/eeg;
+    $text =~ s/\\U([0-9a-fA-F]{8})/"\"\\N{U+$1}\""/eeg;
     $text;
 }
 
