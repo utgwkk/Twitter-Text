@@ -211,25 +211,25 @@ sub parse_tweet {
     my $permilage = int($scaled_weighted_length * 1000 / $max_weighted_tweet_length);
 
     return +{
-        weightedLength => $scaled_weighted_length,
+        weighted_length => $scaled_weighted_length,
         valid => $is_valid ? 1 : 0,
         permillage => $permilage,
-        displayRangeStart => 0,
-        displayRangeEnd => $display_offset + $normalized_text_offset - 1,
-        validRangeStart => 0,
-        validRangeEnd => $valid_offset + $normalized_text_offset - 1,
+        display_range_start => 0,
+        display_range_end => $display_offset + $normalized_text_offset - 1,
+        valid_range_start => 0,
+        valid_range_end => $valid_offset + $normalized_text_offset - 1,
     };
 }
 
 sub _empty_parse_results {
     return {
-        weightedLength => 0,
+        weighted_length => 0,
         valid => 1,
         permillage => 0,
-        displayRangeStart => 0,
-        displayRangeEnd => 0,
-        validRangeStart => 0,
-        validRangeEnd => 0,
+        display_range_start => 0,
+        display_range_end => 0,
+        valid_range_start => 0,
+        valid_range_end => 0,
     };
 }
 
@@ -270,15 +270,15 @@ The C<parse_tweet> function takes a C<$text> string and optional C<\%options> pa
 
 =over 4
 
-=item C<weightedLength>: the overall length of the tweet with code points weighted per the ranges defined in the configuration file.
+=item C<weighted_length>: the overall length of the tweet with code points weighted per the ranges defined in the configuration file.
 
 =item C<permillage>: indicates the proportion (per thousand) of the weighted length in comparison to the max weighted length. A value > 1000 indicates input text that is longer than the allowable maximum.
 
 =item C<valid>: indicates if input text length corresponds to a valid result.
 
-=item C<displayRangeStart>, C<displayRangeEnd>: An array reference of two unicode code point indices identifying the inclusive start and exclusive end of the displayable content of the Tweet.
+=item C<display_range_start>, C<display_range_end>: An array reference of two unicode code point indices identifying the inclusive start and exclusive end of the displayable content of the Tweet.
 
-=item C<vaildRangeStart>, C<validRangeEnd>: An array reference of two unicode code point indices identifying the inclusive start and exclusive end of the valid content of the Tweet.
+=item C<vaildRangeStart>, C<valid_range_end>: An array reference of two unicode code point indices identifying the inclusive start and exclusive end of the valid content of the Tweet.
 
 =back
 

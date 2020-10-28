@@ -21,11 +21,11 @@ Twitter::Text is a Perl implementation of the twitter-text parsing library.
 
 The `parse_tweet` function takes a `$text` string and optional `\%options` parameter and returns a hash reference with following values:
 
-- `weightedLength`: the overall length of the tweet with code points weighted per the ranges defined in the configuration file.
+- `weighted_length`: the overall length of the tweet with code points weighted per the ranges defined in the configuration file.
 - `permillage`: indicates the proportion (per thousand) of the weighted length in comparison to the max weighted length. A value > 1000 indicates input text that is longer than the allowable maximum.
 - `valid`: indicates if input text length corresponds to a valid result.
-- `displayRangeStart`, `displayRangeEnd`: An array reference of two unicode code point indices identifying the inclusive start and exclusive end of the displayable content of the Tweet.
-- `vaildRangeStart`, `validRangeEnd`: An array reference of two unicode code point indices identifying the inclusive start and exclusive end of the valid content of the Tweet.
+- `display_range_start`, `display_range_end`: An array reference of two unicode code point indices identifying the inclusive start and exclusive end of the displayable content of the Tweet.
+- `vaildRangeStart`, `valid_range_end`: An array reference of two unicode code point indices identifying the inclusive start and exclusive end of the valid content of the Tweet.
 
 # SEE ALSO
 

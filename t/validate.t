@@ -15,18 +15,18 @@ sub convert_yaml_unicode_literal {
 sub expected_parse_result {
     my $testcase = shift;
     hash {
-        field weightedLength => $testcase->{expected}->{weightedLength};
+        field weighted_length => $testcase->{expected}->{weightedLength};
         field valid => bool($testcase->{expected}->{valid} eq 'true');
         field permillage => $testcase->{expected}->{permillage};
         # Note that we don't assert display and valid ranges
-        #field displayRangeStart => $testcase->{expected}->{displayRangeStart};
-        #field displayRangeEnd => $testcase->{expected}->{displayRangeEnd};
-        #field validRangeStart => $testcase->{expected}->{validRangeStart};
-        #field validRangeEnd => $testcase->{expected}->{validRangeEnd};
-        field displayRangeStart => E;
-        field displayRangeEnd => E;
-        field validRangeStart => E;
-        field validRangeEnd => E;
+        #field display_range_start => $testcase->{expected}->{displayRangeStart};
+        #field display_range_end => $testcase->{expected}->{displayRangeEnd};
+        #field valid_range_start => $testcase->{expected}->{validRangeStart};
+        #field valid_range_end => $testcase->{expected}->{validRangeEnd};
+        field display_range_start => E;
+        field display_range_end => E;
+        field valid_range_start => E;
+        field valid_range_end => E;
         etc;
     };
 }
