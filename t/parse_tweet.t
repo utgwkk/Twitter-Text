@@ -10,10 +10,11 @@ sub expected_parse_result {
         field weightedLength => $testcase->{expected}->{weightedLength};
         field valid => bool($testcase->{expected}->{valid} eq 'true');
         field permillage => $testcase->{expected}->{permillage};
-        field displayRangeStart => $testcase->{expected}->{displayRangeStart};
-        field displayRangeEnd => $testcase->{expected}->{displayRangeEnd};
-        field validRangeStart => $testcase->{expected}->{validRangeStart};
-        field validRangeEnd => $testcase->{expected}->{validRangeEnd};
+        # Note that we don't assert display and valid ranges
+        #field displayRangeStart => $testcase->{expected}->{displayRangeStart};
+        #field displayRangeEnd => $testcase->{expected}->{displayRangeEnd};
+        #field validRangeStart => $testcase->{expected}->{validRangeStart};
+        #field validRangeEnd => $testcase->{expected}->{validRangeEnd};
         etc;
     };
 }
