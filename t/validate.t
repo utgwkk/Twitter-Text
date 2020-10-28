@@ -38,7 +38,7 @@ subtest WeightedTweetsCounterTest => sub {
 
     for my $testcase (@$testcases) {
         my $parse_result = parse_tweet(convert_yaml_unicode_literal($testcase->{text}), {
-            config => Twitter::Text::Configuration::configuration_from_file('v2'),
+            config => Twitter::Text::Configuration::V2,
         });
         is $parse_result, expected_parse_result($testcase), $testcase->{description};
     }

@@ -27,8 +27,20 @@ sub configuration_from_file {
     die "$config_name not found";
 }
 
-sub default_configuration {
+sub V1 {
+    return configuration_from_file('v1');
+}
+
+sub V2 {
+    return configuration_from_file('v2');
+}
+
+sub V3 {
     return configuration_from_file('v3');
+}
+
+sub default_configuration {
+    return V3;
 }
 
 1;
