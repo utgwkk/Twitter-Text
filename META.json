@@ -52,7 +52,7 @@
             "Path::Tiny" : "0",
             "Unicode::Normalize" : "0",
             "YAML::Tiny" : "0",
-            "perl" : "5.008001"
+            "perl" : "5.014001"
          }
       },
       "test" : {
