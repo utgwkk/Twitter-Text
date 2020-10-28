@@ -311,6 +311,8 @@ The C<parse_tweet> function takes a C<$text> string and optional C<\%options> pa
 
 L<twitter-text|https://github.com/twitter/twitter-text>. This implementation is heavily based on L<Ruby implementation of twitter-text|https://github.com/twitter/twitter-text/tree/master/rb>.
 
+L<https://developer.twitter.com/en/docs/counting-characters>
+
 =head1 COPYRIGHT & LICENSE
 
 Copyright (C) Twitter, Inc and other contributors
