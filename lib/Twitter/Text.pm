@@ -26,6 +26,7 @@ our $VERSION = "0.01";
 our @EXPORT = qw(
     extract_hashtags
     extract_hashtags_with_indices
+    extract_mentioned_screen_names_with_indices
     extract_mentions_or_lists_with_indices
     extract_urls
     extract_urls_with_indices
@@ -101,6 +102,23 @@ sub extract_hashtags_with_indices {
     }
 
     return $tags;
+}
+
+sub extract_mentioned_screen_names_with_indices {
+    my ($text) = @_;
+
+    return [] unless $text;
+
+    my $possible_screen_name = [];
+    for my $mention_or_list (@{ extract_mentions_or_lists_with_indices($text) }) {
+        next if length $mention_or_list->{list_slug};
+        push @$possible_screen_name, {
+            screen_name => $mention_or_list->{screen_name},
+            indices => $mention_or_list->{indices},
+        };
+    }
+
+    return $possible_screen_name;
 }
 
 sub extract_mentions_or_lists_with_indices {

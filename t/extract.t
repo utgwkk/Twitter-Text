@@ -52,6 +52,24 @@ subtest extract_hashtags_with_indices => sub {
     }
 };
 
+subtest extract_mentions_with_indices => sub {
+    my $testcases = $yaml->[0]->{tests}->{mentions_with_indices};
+    for my $testcase (@$testcases) {
+        my $parse_result = extract_mentioned_screen_names_with_indices(convert_yaml_unicode_literal($testcase->{text}));
+        my $expected = [ map {
+            {
+                screen_name => $_->{screen_name},
+                indices => eval($_->{indices}),
+            };
+        } @{$testcase->{expected}} ];
+        is(
+            $parse_result,
+            $expected,
+            $testcase->{description},
+        );
+    }
+};
+
 subtest extract_mentions_or_lists_with_indices => sub {
     my $testcases = $yaml->[0]->{tests}->{mentions_or_lists_with_indices};
     for my $testcase (@$testcases) {
