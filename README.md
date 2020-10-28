@@ -57,10 +57,6 @@ Please refer [Implementation progress](https://github.com/utgwkk/Twitter-Text/is
 
     my \%parse_result = parse_tweet($text, [\%options]);
 
-### is\_valid\_hashtag
-
-    my $valid = is_valid_hashtag($hashtag);
-
 The `parse_tweet` function takes a `$text` string and optional `\%options` parameter and returns a hash reference with following values:
 
 - `weighted_length`: the overall length of the tweet with code points weighted per the ranges defined in the configuration file.
@@ -68,6 +64,18 @@ The `parse_tweet` function takes a `$text` string and optional `\%options` param
 - `valid`: indicates if input text length corresponds to a valid result.
 - `display_range_start`, `display_range_end`: An array reference of two unicode code point indices identifying the inclusive start and exclusive end of the displayable content of the Tweet.
 - `vaildRangeStart`, `valid_range_end`: An array reference of two unicode code point indices identifying the inclusive start and exclusive end of the valid content of the Tweet.
+
+### is\_valid\_hashtag
+
+    my $valid = is_valid_hashtag($hashtag);
+
+### is\_valid\_list
+
+    my $valid = is_valid_list($username_list);
+
+### is\_valid\_username
+
+    my $valid = is_valid_username($username);
 
 # SEE ALSO
 

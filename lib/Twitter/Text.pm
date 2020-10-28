@@ -36,6 +36,7 @@ our @EXPORT = qw(
     is_valid_hashtag
     is_valid_list
     is_valid_tweet
+    is_valid_username
     parse_tweet
 );
 
@@ -282,6 +283,15 @@ sub is_valid_list {
     );
 }
 
+sub is_valid_username {
+    my ($username) = @_;
+
+    return 0 unless $username;
+
+    my $extracted = extract_mentioned_screen_names($username);
+    return scalar(@$extracted) == 1 && $extracted->[0] eq substr($username, 1);
+}
+
 sub parse_tweet {
     my ($text, $options) = @_;
     # merge options
@@ -489,6 +499,10 @@ The C<parse_tweet> function takes a C<$text> string and optional C<\%options> pa
 =head3 is_valid_list
 
     my $valid = is_valid_list($username_list);
+
+=head3 is_valid_username
+
+    my $valid = is_valid_username($username);
 
 =head1 SEE ALSO
 
