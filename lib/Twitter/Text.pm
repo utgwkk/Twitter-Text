@@ -23,6 +23,8 @@ use Unicode::Normalize qw(NFC);
 
 our $VERSION = "0.01";
 our @EXPORT = qw(
+    extract_hashtags
+    extract_hashtags_with_indices
     extract_urls
     extract_urls_with_indices
     is_valid_tweet
@@ -42,6 +44,16 @@ sub extract_emoji_with_indices {
         };
     }
     return $emoji;
+}
+
+sub extract_hashtags {
+    my ($text) = @_;
+    return [ map { $_->{hashtag} } @{ extract_hashtags_with_indices($text) } ];
+}
+
+sub extract_hashtags_with_indices {
+    my ($text, $options) = @_;
+    return [];
 }
 
 sub extract_urls {
