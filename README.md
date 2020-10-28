@@ -12,6 +12,8 @@ Twitter::Text is ...
 
 # LICENSE
 
+Copyright 2012-2020 Twitter, Inc and other contributors
+
 Copyright (C) utgwkk.
 
 This library is free software; you can redistribute it and/or modify
