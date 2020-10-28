@@ -73,6 +73,10 @@ The `parse_tweet` function takes a `$text` string and optional `\%options` param
 
     my $valid = is_valid_list($username_list);
 
+### is\_valid\_url
+
+    my $valid = is_valid_url($url, [unicode_domains => 1, require_protocol => 1]);
+
 ### is\_valid\_username
 
     my $valid = is_valid_username($username);

@@ -218,4 +218,99 @@ our $valid_url = qr{
 our $cashtag = qr/[a-z]{1,6}(?:[._][a-z]{1,2})?/i;
 our $valid_cashtag = qr/(^|[$UNICODE_SPACES$DIRECTIONAL_CHARACTERS])(\$)($cashtag)(?=$|\s|[$PUNCTUATION_CHARS])/i;
 
+# These URL validation pattern strings are based on the ABNF from RFC 3986
+our $validate_url_unreserved = qr/[a-z\p{Cyrillic}0-9\p{Pd}._~]/i;
+our $validate_url_pct_encoded = qr/(?:%[0-9a-f]{2})/i;
+our $validate_url_sub_delims = qr/[!\$&'()*+,;=]/i;
+our $validate_url_pchar = qr/(?:
+    $validate_url_unreserved|
+    $validate_url_pct_encoded|
+    $validate_url_sub_delims|
+    [:\|@]
+)/iox;
+
+our $validate_url_scheme = qr/(?:[a-z][a-z0-9+\-.]*)/i;
+our $validate_url_userinfo = qr/(?:
+    $validate_url_unreserved|
+    $validate_url_pct_encoded|
+    $validate_url_sub_delims|
+    :
+)*/iox;
+
+our $validate_url_dec_octet = qr/(?:[0-9]|(?:[1-9][0-9])|(?:1[0-9]{2})|(?:2[0-4][0-9])|(?:25[0-5]))/i;
+our $validate_url_ipv4 =
+    qr/(?:$validate_url_dec_octet(?:\.$validate_url_dec_octet){3})/iox;
+
+# Punting on real IPv6 validation for now
+our $validate_url_ipv6 = qr/(?:\[[a-f0-9:\.]+\])/i;
+
+# Also punting on IPvFuture for now
+our $validate_url_ip = qr/(?:
+    $validate_url_ipv4|
+    $validate_url_ipv6
+)/iox;
+
+# This is more strict than the rfc specifies
+our $validate_url_subdomain_segment = qr/(?:[a-z0-9](?:[a-z0-9_\-]*[a-z0-9])?)/i;
+our $validate_url_domain_segment = qr/(?:[a-z0-9](?:[a-z0-9\-]*[a-z0-9])?)/i;
+our $validate_url_domain_tld = qr/(?:[a-z](?:[a-z0-9\-]*[a-z0-9])?)/i;
+our $validate_url_domain = qr/(?:(?:$validate_url_subdomain_segment\.)*
+                                (?:$validate_url_domain_segment\.)
+                                $validate_url_domain_tld)/iox;
+
+our $validate_url_host = qr/(?:
+    $validate_url_ip|
+    $validate_url_domain
+)/iox;
+
+# Unencoded internationalized domains - this doesn't check for invalid UTF-8 sequences
+our $validate_url_unicode_subdomain_segment =
+    qr/(?:(?:[a-z0-9]|[^\x00-\x7f])(?:(?:[a-z0-9_\-]|[^\x00-\x7f])*(?:[a-z0-9]|[^\x00-\x7f]))?)/ix;
+our $validate_url_unicode_domain_segment =
+    qr/(?:(?:[a-z0-9]|[^\x00-\x7f])(?:(?:[a-z0-9\-]|[^\x00-\x7f])*(?:[a-z0-9]|[^\x00-\x7f]))?)/ix;
+our $validate_url_unicode_domain_tld =
+    qr/(?:(?:[a-z]|[^\x00-\x7f])(?:(?:[a-z0-9\-]|[^\x00-\x7f])*(?:[a-z0-9]|[^\x00-\x7f]))?)/ix;
+our $validate_url_unicode_domain = qr/(?:(?:$validate_url_unicode_subdomain_segment\.)*
+                                        (?:$validate_url_unicode_domain_segment\.)
+                                        $validate_url_unicode_domain_tld)/iox;
+
+our $validate_url_unicode_host = qr/(?:
+    $validate_url_ip|
+    $validate_url_unicode_domain
+)/iox;
+
+our $validate_url_port = qr/[0-9]{1,5}/;
+
+our $validate_url_unicode_authority = qr{
+    (?:($validate_url_userinfo)@)?     #  $1 userinfo
+    ($validate_url_unicode_host)       #  $2 host
+    (?::($validate_url_port))?         #  $3 port
+}ix;
+
+our $validate_url_authority = qr{
+    (?:($validate_url_userinfo)@)?     #  $1 userinfo
+    ($validate_url_host)               #  $2 host
+    (?::($validate_url_port))?         #  $3 port
+}ix;
+
+our $validate_url_path = qr{(/$validate_url_pchar*)*}i;
+our $validate_url_query = qr{($validate_url_pchar|/|\?)*}i;
+our $validate_url_fragment = qr{($validate_url_pchar|/|\?)*}i;
+
+# Modified version of RFC 3986 Appendix B
+our $validate_url_unencoded = qr{
+    \A                                #  Full URL
+    (?:
+    ([^:/?#]+)://                  #  $1 Scheme
+    )?
+    ([^/?#]*)                        #  $2 Authority
+    ([^?#]*)                         #  $3 Path
+    (?:
+    \?([^#]*)                      #  $4 Query
+    )?
+    (?:
+    \#(.*)                         #  $5 Fragment
+    )?\z
+}ix;
+
 1;
