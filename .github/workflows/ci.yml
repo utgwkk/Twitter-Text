@@ -27,6 +27,9 @@ jobs:
         with:
           perl-version: ${{ matrix.perl-version }}
 
+      - name: Remove Perl Problem Matcher
+        run: echo "::remove-matcher owner=perl::"
+
       - run: cpanm -L local --installdeps .
 
       - run: prove -Ilocal/lib/perl5 -Ilib -lv t

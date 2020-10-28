@@ -42,12 +42,21 @@
       },
       "runtime" : {
          "requires" : {
+            "Carp" : "0",
+            "Exporter" : "0",
+            "JSON::XS" : "0",
+            "List::Util" : "0",
+            "Net::IDN::Encode" : "0",
+            "Path::Tiny" : "0",
+            "Unicode::Normalize" : "0",
+            "YAML::Tiny" : "0",
             "perl" : "5.008001"
          }
       },
       "test" : {
          "requires" : {
             "Test2::Plugin::GitHub::Actions::AnnotateFailedTest" : "0",
+            "Test2::V0" : "0",
             "Test::More" : "0.98"
          }
       }
