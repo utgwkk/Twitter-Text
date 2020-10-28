@@ -24,6 +24,8 @@ use Unicode::Normalize qw(NFC);
 
 our $VERSION = "0.01";
 our @EXPORT = qw(
+    extract_cashtags
+    extract_cashtags_with_indices
     extract_hashtags
     extract_hashtags_with_indices
     extract_mentioned_screen_names
@@ -64,6 +66,30 @@ sub remove_overlapping_entities {
         $prev = $entity;
     }
     return $ret;
+}
+
+sub extract_cashtags {
+    my ($text) = @_;
+    return [ map { $_->{cashtag} } @{ extract_cashtags_with_indices($text) }];
+}
+
+sub extract_cashtags_with_indices {
+    my ($text) = @_;
+
+    return [] unless $text =~ /\$/;
+
+    my $tags = [];
+    while ($text =~ /($Twitter::Text::Regexp::valid_cashtag)/g) {
+        my ($before, $dollar, $cash_text) = ($2, $3, $4);
+        my $start_position = $-[3];
+        my $end_position = $+[4];
+        push @$tags, {
+            cashtag => $cash_text,
+            indices => [$start_position, $end_position],
+        };
+    }
+
+    return $tags;
 }
 
 sub extract_hashtags {

@@ -215,4 +215,7 @@ our $valid_url = qr{
     )
   )}ix;
 
+our $cashtag = qr/[a-z]{1,6}(?:[._][a-z]{1,2})?/i;
+our $valid_cashtag = qr/(^|[$UNICODE_SPACES$DIRECTIONAL_CHARACTERS])(\$)($cashtag)(?=$|\s|[$PUNCTUATION_CHARS])/i;
+
 1;
