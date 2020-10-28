@@ -83,7 +83,7 @@ The `parse_tweet` function takes a `$text` string and optional `\%options` param
 
 # SEE ALSO
 
-[twitter-text](https://github.com/twitter/twitter-text). This implementation is heavily based on [Ruby implementation of twitter-text](https://github.com/twitter/twitter-text/tree/master/rb).
+[twitter-text](https://github.com/twitter/twitter-text). Implementation of Twitter::Text (this library) is heavily based on [Ruby implementation of twitter-text](https://github.com/twitter/twitter-text/tree/master/rb).
 
 [https://developer.twitter.com/en/docs/counting-characters](https://developer.twitter.com/en/docs/counting-characters)
 
