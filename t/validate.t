@@ -36,6 +36,46 @@ subtest tweets => sub {
     }
 };
 
+subtest hashtags => sub {
+    my $testcases = $yaml->[0]->{tests}->{hashtags};
+    for my $testcase (@$testcases) {
+        my $validation_result = is_valid_hashtag(convert_yaml_unicode_literal($testcase->{text}));
+        is $validation_result, bool($testcase->{expected} eq 'true'), $testcase->{description};
+    }
+};
+
+subtest lists => sub {
+    my $testcases = $yaml->[0]->{tests}->{lists};
+    for my $testcase (@$testcases) {
+        my $validation_result = is_valid_list(convert_yaml_unicode_literal($testcase->{text}));
+        is $validation_result, bool($testcase->{expected} eq 'true'), $testcase->{description};
+    }
+};
+
+subtest urls => sub {
+    my $testcases = $yaml->[0]->{tests}->{urls};
+    for my $testcase (@$testcases) {
+        my $validation_result = is_valid_url(convert_yaml_unicode_literal($testcase->{text}));
+        is $validation_result, bool($testcase->{expected} eq 'true'), $testcase->{description};
+    }
+};
+
+subtest urls_without_protocol => sub {
+    my $testcases = $yaml->[0]->{tests}->{urls_without_protocol};
+    for my $testcase (@$testcases) {
+        my $validation_result = is_valid_url(convert_yaml_unicode_literal($testcase->{text}), require_protocol => 0);
+        is $validation_result, bool($testcase->{expected} eq 'true'), $testcase->{description} , $testcase->{text};
+    }
+};
+
+subtest usernames => sub {
+    my $testcases = $yaml->[0]->{tests}->{usernames};
+    for my $testcase (@$testcases) {
+        my $validation_result = is_valid_username(convert_yaml_unicode_literal($testcase->{text}));
+        is $validation_result, bool($testcase->{expected} eq 'true'), $testcase->{description};
+    }
+};
+
 subtest WeightedTweetsCounterTest => sub {
     my $testcases = $yaml->[0]->{tests}->{WeightedTweetsCounterTest};
 

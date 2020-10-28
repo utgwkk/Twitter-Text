@@ -33,7 +33,11 @@ our @EXPORT = qw(
     extract_mentions_or_lists_with_indices
     extract_urls
     extract_urls_with_indices
+    is_valid_hashtag
+    is_valid_list
     is_valid_tweet
+    is_valid_url
+    is_valid_username
     parse_tweet
 );
 
@@ -263,6 +267,59 @@ sub is_valid_tweet {
     })->{valid};
 }
 
+sub is_valid_hashtag {
+    my ($hashtag) = @_;
+
+    return 0 unless length $hashtag;
+
+    my $extracted = extract_hashtags($hashtag);
+    return scalar(@$extracted) == 1 && $extracted->[0] eq (substr $hashtag, 1);
+}
+
+sub is_valid_list {
+    my ($username_list) = @_;
+    return !!(
+        $username_list =~ /\A($Twitter::Text::Regexp::valid_mention_or_list)\z/
+        && $2 eq '' && $5 && length $5
+    );
+}
+
+sub is_valid_url {
+    my ($url, %opts) = @_;
+    my $unicode_domains = exists $opts{unicode_domains} ? $opts{unicode_domains} : 1;
+    my $require_protocol = exists $opts{require_protocol} ? $opts{require_protocol} : 1;
+
+    return 0 unless $url;
+
+    my ($url_parts) = $url =~ /($Twitter::Text::Regexp::validate_url_unencoded)/;
+    return 0 unless $url_parts && $url_parts eq $url;
+
+    my ($scheme, $authorithy, $path, $query, $fragment) = ($2, $3, $4, $5, $6);
+    return 0 unless ((!$require_protocol ||
+                      (valid_match($scheme, $Twitter::Text::Regexp::validate_url_scheme) && $scheme =~ /\Ahttps?\Z/i)) &&
+                    valid_match($path, $Twitter::Text::Regexp::validate_url_path) &&
+                    valid_match($query, $Twitter::Text::Regexp::validate_url_query, 1) &&
+                    valid_match($fragment, $Twitter::Text::Regexp::validate_url_fragment, 1));
+
+    return ($unicode_domains && valid_match($authorithy, $Twitter::Text::Regexp::validate_url_unicode_authority)) ||
+           (!$unicode_domains && valid_match($authorithy, $Twitter::Text::Regexp::validate_url_authorithy));
+}
+
+sub valid_match {
+    my ($string, $regex, $optional) = @_;
+    return (defined $string && ($string =~ $regex) && $& eq $string) unless $optional;
+    return !(defined $string && (!($string =~ $regex) || $& ne $string));
+}
+
+sub is_valid_username {
+    my ($username) = @_;
+
+    return 0 unless $username;
+
+    my $extracted = extract_mentioned_screen_names($username);
+    return scalar(@$extracted) == 1 && $extracted->[0] eq substr($username, 1);
+}
+
 sub parse_tweet {
     my ($text, $options) = @_;
     # merge options
@@ -462,6 +519,22 @@ The C<parse_tweet> function takes a C<$text> string and optional C<\%options> pa
 =item C<vaildRangeStart>, C<valid_range_end>: An array reference of two unicode code point indices identifying the inclusive start and exclusive end of the valid content of the Tweet.
 
 =back
+
+=head3 is_valid_hashtag
+
+    my $valid = is_valid_hashtag($hashtag);
+
+=head3 is_valid_list
+
+    my $valid = is_valid_list($username_list);
+
+=head3 is_valid_url
+
+    my $valid = is_valid_url($url, [unicode_domains => 1, require_protocol => 1]);
+
+=head3 is_valid_username
+
+    my $valid = is_valid_username($username);
 
 =head1 SEE ALSO
 
