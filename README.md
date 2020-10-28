@@ -31,6 +31,18 @@ Please refer [Implementation progress](https://github.com/utgwkk/Twitter-Text/is
 
     my \@hashtags_with_indices = extract_hashtags_with_indices($text, [\%options]);
 
+### extract\_mentioned\_screen\_names
+
+    my \@screen_names = extract_mentioned_screen_names($text);
+
+### extract\_mentioned\_screen\_names\_with\_indices
+
+    my \@screen_names_with_indices = extract_mentioned_screen_names_with_indices($text);
+
+### extract\_mentions\_or\_lists\_with\_indices
+
+    my \@mentions_or_lists_with_indices = extract_mentions_or_lists_with_indices($text);
+
 ### extract\_urls
 
     my \@urls = extract_urls($text);

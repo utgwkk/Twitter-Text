@@ -143,4 +143,31 @@ subtest extract_urls_with_directional_markers => sub {
     }
 };
 
+subtest extract_cashtags => sub {
+    my $testcases = $yaml->[0]->{tests}->{cashtags};
+    for my $testcase (@$testcases) {
+        my $parse_result = extract_cashtags($testcase->{text});
+        my $expected = $testcase->{expected};
+        $expected = eval($expected) unless ref $expected eq 'ARRAY';
+        is(
+            $parse_result,
+            $expected,
+            $testcase->{description},
+        );
+    }
+};
+
+subtest extract_cashtags_with_indices => sub {
+    my $testcases = $yaml->[0]->{tests}->{cashtags_with_indices};
+    for my $testcase (@$testcases) {
+        my $parse_result = extract_cashtags_with_indices(convert_yaml_unicode_literal($testcase->{text}));
+        is $parse_result, [ map {
+            {
+                cashtag => $_->{cashtag},
+                indices => eval($_->{indices}), # XXX: treal YAML's array as Perl's ArrayRef
+            }
+        } @{$testcase->{expected}} ], $testcase->{description};
+    }
+};
+
 done_testing;
