@@ -2,6 +2,7 @@ use Test2::V0;
 use Test2::Plugin::GitHub::Actions::AnnotateFailedTest;
 
 use Twitter::Text::Util;
+use Twitter::Text::Configuration;
 use Twitter::Text;
 
 sub convert_yaml_unicode_literal {
@@ -30,11 +31,25 @@ sub expected_parse_result {
 }
 
 my $yaml = load_yaml("validate.yml");
-my $testcases = $yaml->[0]->{tests}->{WeightedTweetsWithDiscountedEmojiCounterTest};
 
-for my $testcase (@$testcases) {
-    my $parse_result = parse_tweet(convert_yaml_unicode_literal($testcase->{text}));
-    is $parse_result, expected_parse_result($testcase), $testcase->{description};
-}
+subtest WeightedTweetsCounterTest => sub {
+    my $testcases = $yaml->[0]->{tests}->{WeightedTweetsCounterTest};
+
+    for my $testcase (@$testcases) {
+        my $parse_result = parse_tweet(convert_yaml_unicode_literal($testcase->{text}), {
+            config => Twitter::Text::Configuration::configuration_from_file('v2'),
+        });
+        is $parse_result, expected_parse_result($testcase), $testcase->{description};
+    }
+};
+
+subtest WeightedTweetsWithDiscountedEmojiCounterTest => sub {
+    my $testcases = $yaml->[0]->{tests}->{WeightedTweetsWithDiscountedEmojiCounterTest};
+
+    for my $testcase (@$testcases) {
+        my $parse_result = parse_tweet(convert_yaml_unicode_literal($testcase->{text}));
+        is $parse_result, expected_parse_result($testcase), $testcase->{description};
+    }
+};
 
 done_testing;
