@@ -269,7 +269,19 @@ Twitter::Text is a Perl implementation of the twitter-text parsing library.
 
 =head1 FUNCTIONS
 
-=head2 parse_tweet
+=head2 Extraction
+
+=head3 extract_urls
+
+    my \@urls = extract_urls($text);
+
+=head3 extract_urls_with_indices
+
+    my \@urls = extract_urls_with_indices($text, [\%options]);
+
+=head2 Validation
+
+=head3 parse_tweet
 
     my \%parse_result = parse_tweet($text, [\%options]);
 
