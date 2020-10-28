@@ -1,6 +1,6 @@
 # NAME
 
-Twitter::Text - Perl implementation of the twitter-text parsing library (under construction)
+Twitter::Text - Perl implementation of the twitter-text parsing library
 
 # SYNOPSIS
 
@@ -15,7 +15,7 @@ Twitter::Text is a Perl implementation of the twitter-text parsing library.
 
 ## WARNING
 
-This library is under construction. Many functionalities of original [twitter-text](https://github.com/twitter/twitter-text) library are not implemented yet.
+This library does not implement auto-linking and hit highlighting.
 
 Please refer [Implementation progress](https://github.com/utgwkk/Twitter-Text/issues/5) for latest status.
 

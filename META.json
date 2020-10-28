@@ -1,5 +1,5 @@
 {
-   "abstract" : "Perl implementation of the twitter-text parsing library (under construction)",
+   "abstract" : "Perl implementation of the twitter-text parsing library",
    "author" : [
       "utgwkk <utagawakiki@gmail.com>"
    ],
