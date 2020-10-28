@@ -457,10 +457,6 @@ Please refer L<Implementation progress|https://github.com/utgwkk/Twitter-Text/is
 
     my \%parse_result = parse_tweet($text, [\%options]);
 
-=head3 is_valid_hashtag
-
-    my $valid = is_valid_hashtag($hashtag);
-
 The C<parse_tweet> function takes a C<$text> string and optional C<\%options> parameter and returns a hash reference with following values:
 
 =over 4
@@ -476,6 +472,10 @@ The C<parse_tweet> function takes a C<$text> string and optional C<\%options> pa
 =item C<vaildRangeStart>, C<valid_range_end>: An array reference of two unicode code point indices identifying the inclusive start and exclusive end of the valid content of the Tweet.
 
 =back
+
+=head3 is_valid_hashtag
+
+    my $valid = is_valid_hashtag($hashtag);
 
 =head1 SEE ALSO
 
