@@ -4,7 +4,10 @@ use warnings;
 use Exporter 'import';
 use File::Share qw(dist_file);
 use YAML::Tiny;
-our @EXPORT = qw(convert_yaml_unicode_literal load_yaml);
+our @EXPORT = qw(
+    convert_yaml_unicode_literal
+    load_yaml
+);
 
 # internal use only, do not use this module directly.
 

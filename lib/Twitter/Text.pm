@@ -22,7 +22,12 @@ use Twitter::Text::Regexp::Emoji;
 use Unicode::Normalize qw(NFC);
 
 our $VERSION = "0.01";
-our @EXPORT = qw(is_valid_tweet parse_tweet extract_urls extract_urls_with_indices);
+our @EXPORT = qw(
+    extract_urls
+    extract_urls_with_indices
+    is_valid_tweet
+    parse_tweet
+);
 
 sub extract_emoji_with_indices {
     my ($text) = @_;
