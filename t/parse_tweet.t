@@ -53,4 +53,14 @@ subtest WeightedTweetsWithDiscountedEmojiCounterTest => sub {
     }
 };
 
+
+subtest UnicodeDirectionalMarkerCounterTest => sub {
+    my $testcases = $yaml->[0]->{tests}->{UnicodeDirectionalMarkerCounterTest};
+
+    for my $testcase (@$testcases) {
+        my $parse_result = parse_tweet(convert_yaml_unicode_literal($testcase->{text}));
+        is $parse_result, expected_parse_result($testcase), $testcase->{description};
+    }
+};
+
 done_testing;
