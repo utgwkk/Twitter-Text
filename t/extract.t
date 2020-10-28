@@ -23,7 +23,20 @@ subtest extract_urls => sub {
 subtest extract_urls_with_indices => sub {
     my $testcases = $yaml->[0]->{tests}->{urls_with_indices};
     for my $testcase (@$testcases) {
-        my $parse_result = extract_urls_with_indices($testcase->{text});
+        my $parse_result = extract_urls_with_indices(convert_yaml_unicode_literal($testcase->{text}));
+        is $parse_result, [ map {
+            {
+                url => $_->{url},
+                indices => eval($_->{indices}), # XXX: treal YAML's array as Perl's ArrayRef
+            }
+        } @{$testcase->{expected}} ], $testcase->{description};
+    }
+};
+
+subtest extract_urls_with_directional_markers => sub {
+    my $testcases = $yaml->[0]->{tests}->{urls_with_directional_markers};
+    for my $testcase (@$testcases) {
+        my $parse_result = extract_urls_with_indices(convert_yaml_unicode_literal($testcase->{text}));
         is $parse_result, [ map {
             {
                 url => $_->{url},
