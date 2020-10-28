@@ -65,6 +65,7 @@ subtest extract_mentions => sub {
         );
     }
 };
+
 subtest extract_mentions_with_indices => sub {
     my $testcases = $yaml->[0]->{tests}->{mentions_with_indices};
     for my $testcase (@$testcases) {
