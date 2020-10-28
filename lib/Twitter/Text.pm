@@ -137,11 +137,14 @@ sub extract_mentions_or_lists_with_indices {
         my ($before, $at, $screen_name, $list_slug) = ($2, $3, $4, $5);
         my $start_position = $-[4] - 1;
         my $end_position = $+[defined $list_slug ? 5 : 4];
-        push @$possible_entries, {
-            screen_name => $screen_name,
-            list_slug => $list_slug || '',
-            indices => [$start_position, $end_position],
-        };
+        my $after = $';
+        unless ($after =~ $Twitter::Text::Regexp::end_mention_match) {
+            push @$possible_entries, {
+                screen_name => $screen_name,
+                list_slug => $list_slug || '',
+                indices => [$start_position, $end_position],
+            };
+        }
     }
     return $possible_entries;
 }
