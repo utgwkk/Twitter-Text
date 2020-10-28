@@ -15,6 +15,10 @@ sub expected_parse_result {
         #field displayRangeEnd => $testcase->{expected}->{displayRangeEnd};
         #field validRangeStart => $testcase->{expected}->{validRangeStart};
         #field validRangeEnd => $testcase->{expected}->{validRangeEnd};
+        field displayRangeStart => E;
+        field displayRangeEnd => E;
+        field validRangeStart => E;
+        field validRangeEnd => E;
         etc;
     };
 }
