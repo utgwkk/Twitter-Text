@@ -254,7 +254,7 @@ __END__
 
 =head1 NAME
 
-Twitter::Text - Perl implementation of the twitter-text parsing library
+Twitter::Text - Perl implementation of the twitter-text parsing library (under construction)
 
 =head1 SYNOPSIS
 
@@ -266,6 +266,12 @@ Twitter::Text - Perl implementation of the twitter-text parsing library
 =head1 DESCRIPTION
 
 Twitter::Text is a Perl implementation of the twitter-text parsing library.
+
+=head2 WARNING
+
+This library is under construction. Many functionalities of original L<twitter-text|https://github.com/twitter/twitter-text> library are not implemented yet.
+
+Please refer L<Implementation progress|https://github.com/utgwkk/Twitter-Text/issues/5> for latest status.
 
 =head1 FUNCTIONS
 
