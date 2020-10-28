@@ -26,6 +26,7 @@ our $VERSION = "0.01";
 our @EXPORT = qw(
     extract_hashtags
     extract_hashtags_with_indices
+    extract_mentions_or_lists_with_indices
     extract_urls
     extract_urls_with_indices
     is_valid_tweet
@@ -100,6 +101,25 @@ sub extract_hashtags_with_indices {
     }
 
     return $tags;
+}
+
+sub extract_mentions_or_lists_with_indices {
+    my ($text) = @_;
+
+    return [] unless $text =~ /[@＠]/;
+
+    my $possible_entries = [];
+    while ($text =~ /($Twitter::Text::Regexp::valid_mention_or_list)/g) {
+        my ($before, $at, $screen_name, $list_slug) = ($2, $3, $4, $5);
+        my $start_position = $-[4] - 1;
+        my $end_position = $+[defined $list_slug ? 5 : 4];
+        push @$possible_entries, {
+            screen_name => $screen_name,
+            list_slug => $list_slug || '',
+            indices => [$start_position, $end_position],
+        };
+    }
+    return $possible_entries;
 }
 
 sub extract_urls {
