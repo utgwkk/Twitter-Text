@@ -1,3 +1,0 @@
-[submodule "share/twitter-text"]
-	path = share/twitter-text
-	url = https://github.com/twitter/twitter-text.git
