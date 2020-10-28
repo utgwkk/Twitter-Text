@@ -76,6 +76,48 @@ our $LATIN_ACCENTS = join '', (
 );
 our $latin_accents = qr/[$LATIN_ACCENTS]+/o;
 
+our $HASHTAG_LETTERS_AND_MARKS = '\p{L}\p{M}' .
+    "\N{U+037f}\N{U+0528}-\N{U+052f}\N{U+08a0}-\N{U+08b2}\N{U+08e4}-\N{U+08ff}\N{U+0978}\N{U+0980}\N{U+0c00}\N{U+0c34}\N{U+0c81}\N{U+0d01}\N{U+0ede}\N{U+0edf}" .
+    "\N{U+10c7}\N{U+10cd}\N{U+10fd}-\N{U+10ff}\N{U+16f1}-\N{U+16f8}\N{U+17b4}\N{U+17b5}\N{U+191d}\N{U+191e}\N{U+1ab0}-\N{U+1abe}\N{U+1bab}-\N{U+1bad}\N{U+1bba}-" .
+    "\N{U+1bbf}\N{U+1cf3}-\N{U+1cf6}\N{U+1cf8}\N{U+1cf9}\N{U+1de7}-\N{U+1df5}\N{U+2cf2}\N{U+2cf3}\N{U+2d27}\N{U+2d2d}\N{U+2d66}\N{U+2d67}\N{U+9fcc}\N{U+a674}-" .
+    "\N{U+a67b}\N{U+a698}-\N{U+a69d}\N{U+a69f}\N{U+a792}-\N{U+a79f}\N{U+a7aa}-\N{U+a7ad}\N{U+a7b0}\N{U+a7b1}\N{U+a7f7}-\N{U+a7f9}\N{U+a9e0}-\N{U+a9ef}\N{U+a9fa}-" .
+    "\N{U+a9fe}\N{U+aa7c}-\N{U+aa7f}\N{U+aae0}-\N{U+aaef}\N{U+aaf2}-\N{U+aaf6}\N{U+ab30}-\N{U+ab5a}\N{U+ab5c}-\N{U+ab5f}\N{U+ab64}\N{U+ab65}\N{U+f870}-\N{U+f87f}" .
+    "\N{U+f882}\N{U+f884}-\N{U+f89f}\N{U+f8b8}\N{U+f8c1}-\N{U+f8d6}\N{U+fa2e}\N{U+fa2f}\N{U+fe27}-\N{U+fe2d}\N{U+102e0}\N{U+1031f}\N{U+10350}-\N{U+1037a}" .
+    "\N{U+10500}-\N{U+10527}\N{U+10530}-\N{U+10563}\N{U+10600}-\N{U+10736}\N{U+10740}-\N{U+10755}\N{U+10760}-\N{U+10767}" .
+    "\N{U+10860}-\N{U+10876}\N{U+10880}-\N{U+1089e}\N{U+10980}-\N{U+109b7}\N{U+109be}\N{U+109bf}\N{U+10a80}-\N{U+10a9c}" .
+    "\N{U+10ac0}-\N{U+10ac7}\N{U+10ac9}-\N{U+10ae6}\N{U+10b80}-\N{U+10b91}\N{U+1107f}\N{U+110d0}-\N{U+110e8}\N{U+11100}-" .
+    "\N{U+11134}\N{U+11150}-\N{U+11173}\N{U+11176}\N{U+11180}-\N{U+111c4}\N{U+111da}\N{U+11200}-\N{U+11211}\N{U+11213}-" .
+    "\N{U+11237}\N{U+112b0}-\N{U+112ea}\N{U+11301}-\N{U+11303}\N{U+11305}-\N{U+1130c}\N{U+1130f}\N{U+11310}\N{U+11313}-" .
+    "\N{U+11328}\N{U+1132a}-\N{U+11330}\N{U+11332}\N{U+11333}\N{U+11335}-\N{U+11339}\N{U+1133c}-\N{U+11344}\N{U+11347}" .
+    "\N{U+11348}\N{U+1134b}-\N{U+1134d}\N{U+11357}\N{U+1135d}-\N{U+11363}\N{U+11366}-\N{U+1136c}\N{U+11370}-\N{U+11374}" .
+    "\N{U+11480}-\N{U+114c5}\N{U+114c7}\N{U+11580}-\N{U+115b5}\N{U+115b8}-\N{U+115c0}\N{U+11600}-\N{U+11640}\N{U+11644}" .
+    "\N{U+11680}-\N{U+116b7}\N{U+118a0}-\N{U+118df}\N{U+118ff}\N{U+11ac0}-\N{U+11af8}\N{U+1236f}-\N{U+12398}\N{U+16a40}-" .
+    "\N{U+16a5e}\N{U+16ad0}-\N{U+16aed}\N{U+16af0}-\N{U+16af4}\N{U+16b00}-\N{U+16b36}\N{U+16b40}-\N{U+16b43}\N{U+16b63}-" .
+    "\N{U+16b77}\N{U+16b7d}-\N{U+16b8f}\N{U+16f00}-\N{U+16f44}\N{U+16f50}-\N{U+16f7e}\N{U+16f8f}-\N{U+16f9f}\N{U+1bc00}-" .
+    "\N{U+1bc6a}\N{U+1bc70}-\N{U+1bc7c}\N{U+1bc80}-\N{U+1bc88}\N{U+1bc90}-\N{U+1bc99}\N{U+1bc9d}\N{U+1bc9e}\N{U+1e800}-" .
+    "\N{U+1e8c4}\N{U+1e8d0}-\N{U+1e8d6}\N{U+1ee00}-\N{U+1ee03}\N{U+1ee05}-\N{U+1ee1f}\N{U+1ee21}\N{U+1ee22}\N{U+1ee24}" .
+    "\N{U+1ee27}\N{U+1ee29}-\N{U+1ee32}\N{U+1ee34}-\N{U+1ee37}\N{U+1ee39}\N{U+1ee3b}\N{U+1ee42}\N{U+1ee47}\N{U+1ee49}" .
+    "\N{U+1ee4b}\N{U+1ee4d}-\N{U+1ee4f}\N{U+1ee51}\N{U+1ee52}\N{U+1ee54}\N{U+1ee57}\N{U+1ee59}\N{U+1ee5b}\N{U+1ee5d}\N{U+1ee5f}" .
+    "\N{U+1ee61}\N{U+1ee62}\N{U+1ee64}\N{U+1ee67}-\N{U+1ee6a}\N{U+1ee6c}-\N{U+1ee72}\N{U+1ee74}-\N{U+1ee77}\N{U+1ee79}-" .
+    "\N{U+1ee7c}\N{U+1ee7e}\N{U+1ee80}-\N{U+1ee89}\N{U+1ee8b}-\N{U+1ee9b}\N{U+1eea1}-\N{U+1eea3}\N{U+1eea5}-\N{U+1eea9}" .
+    "\N{U+1eeab}-\N{U+1eebb}";
+
+our $HASHTAG_NUMERALS = "\\p{Nd}" .
+    "\N{U+0de6}-\N{U+0def}\N{U+a9f0}-\N{U+a9f9}\N{U+110f0}-\N{U+110f9}\N{U+11136}-\N{U+1113f}\N{U+111d0}-\N{U+111d9}\N{U+112f0}-" .
+    "\N{U+112f9}\N{U+114d0}-\N{U+114d9}\N{U+11650}-\N{U+11659}\N{U+116c0}-\N{U+116c9}\N{U+118e0}-\N{U+118e9}\N{U+16a60}-" .
+    "\N{U+16a69}\N{U+16b50}-\N{U+16b59}";
+
+our $HASHTAG_SPECIAL_CHARS = "_\N{U+200c}\N{U+200d}\N{U+a67e}\N{U+05be}\N{U+05f3}\N{U+05f4}\N{U+ff5e}\N{U+301c}\N{U+309b}\N{U+309c}\N{U+30a0}\N{U+30fb}\N{U+3003}\N{U+0f0b}\N{U+0f0c}\N{U+00b7}";
+
+our $HASHTAG_LETTERS_NUMERALS = "$HASHTAG_LETTERS_AND_MARKS$HASHTAG_NUMERALS$HASHTAG_SPECIAL_CHARS";
+our $HASHTAG_LETTERS_NUMERALS_SET = "[$HASHTAG_LETTERS_NUMERALS]";
+our $HASHTAG_LETTERS_SET = "[$HASHTAG_LETTERS_AND_MARKS]";
+
+our $HASHTAG = qr/(\A|\N{U+fe0e}|\N{U+fe0f}|[^&$HASHTAG_LETTERS_NUMERALS])(#|＃)(?!\N{U+fe0f}|\N{U+20e3})($HASHTAG_LETTERS_NUMERALS_SET*$HASHTAG_LETTERS_SET$HASHTAG_LETTERS_NUMERALS_SET*)/i;
+
+our $valid_hashtag = qr/$HASHTAG/i;
+our $end_hashtag_match = qr/\A(?:[#＃]|:\/\/)/;
+
 our $valid_subdomain = qr/(?:(?:$DOMAIN_VALID_CHARS(?:[_-]|$DOMAIN_VALID_CHARS)*)?$DOMAIN_VALID_CHARS\.)/io;
 our $valid_domain_name = qr/(?:(?:$DOMAIN_VALID_CHARS(?:[-]|$DOMAIN_VALID_CHARS)*)?$DOMAIN_VALID_CHARS\.)/io;
 

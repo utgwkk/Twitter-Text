@@ -4,6 +4,7 @@ requires 'Exporter';
 requires 'File::Share';
 requires 'JSON::XS';
 requires 'List::Util';
+requires 'List::UtilsBy';
 requires 'Net::IDN::Encode';
 requires 'Path::Tiny';
 requires 'Unicode::Normalize';

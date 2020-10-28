@@ -15,6 +15,7 @@ use constant {
 use Carp qw(croak);
 use Exporter 'import';
 use List::Util qw(min);
+use List::UtilsBy qw(nsort_by);
 use Net::IDN::Encode ':all';
 use Twitter::Text::Configuration;
 use Twitter::Text::Regexp;
@@ -46,6 +47,22 @@ sub extract_emoji_with_indices {
     return $emoji;
 }
 
+sub remove_overlapping_entities {
+    my ($entities) = @_;
+
+    $entities = [ nsort_by { $_->{indices}->[0] } @$entities ];
+    # remove duplicates
+    my $ret = [];
+    my $prev;
+    for my $entity (@$entities) {
+        unless ($prev && $prev->{indices}->[1] > $entity->{indices}->[0]) {
+            push @$ret, $entity;
+        }
+        $prev = $entity;
+    }
+    return $ret;
+}
+
 sub extract_hashtags {
     my ($text) = @_;
     return [ map { $_->{hashtag} } @{ extract_hashtags_with_indices($text) } ];
@@ -53,7 +70,36 @@ sub extract_hashtags {
 
 sub extract_hashtags_with_indices {
     my ($text, $options) = @_;
-    return [];
+    return [] unless $text =~ /[#＃]/;
+    $options->{check_url_overlap} = 1 unless exists $options->{check_url_overlap};
+
+    my $tags = [];
+
+    while ($text =~ /($Twitter::Text::Regexp::valid_hashtag)/g) {
+        my ($before, $hash, $hash_text) = ($2, $3, $4);
+        my $start_position = $-[3];
+        my $end_position = $+[4];
+        my $after = $';
+        unless ($after =~ $Twitter::Text::Regexp::end_hashtag_match) {
+            push @$tags, {
+                hashtag => $hash_text,
+                indices => [$start_position, $end_position],
+            };
+        }
+    }
+
+    if ($options->{check_url_overlap}) {
+        my $urls = extract_urls_with_indices($text);
+        if (@$urls) {
+            $tags = [ @$tags, @$urls ];
+            # remove duplicates
+            $tags = remove_overlapping_entities($tags);
+            # remove URL entities
+            $tags = [ grep { $_->{hashtag} } @$tags ];
+        }
+    }
+
+    return $tags;
 }
 
 sub extract_urls {
