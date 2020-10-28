@@ -247,19 +247,46 @@ __END__
 
 =head1 NAME
 
-Twitter::Text - It's new $module
+Twitter::Text - Perl implementation of the twitter-text parsing library
 
 =head1 SYNOPSIS
 
     use Twitter::Text;
 
+    $result = parse_tweet('Hello world こんにちは世界');
+    print $result->{valid} ? 'valid tweet' : 'invalid tweet';
+
 =head1 DESCRIPTION
 
-Twitter::Text is ...
+Twitter::Text is a Perl implementation of the twitter-text parsing library.
+
+=head1 FUNCTIONS
+
+=head2 parse_tweet
+
+    my \%parse_result = parse_tweet($text, [\%options]);
+
+The C<parse_tweet> function takes a C<$text> string and optional C<\%options> parameter and returns a hash reference with following values:
+
+=over 4
+
+=item C<weightedLength>: the overall length of the tweet with code points weighted per the ranges defined in the configuration file.
+
+=item C<permillage>: indicates the proportion (per thousand) of the weighted length in comparison to the max weighted length. A value > 1000 indicates input text that is longer than the allowable maximum.
+
+=item C<valid>: indicates if input text length corresponds to a valid result.
+
+=item C<displayRangeStart>, C<displayRangeEnd>: An array reference of two unicode code point indices identifying the inclusive start and exclusive end of the displayable content of the Tweet.
+
+=item C<vaildRangeStart>, C<validRangeEnd>: An array reference of two unicode code point indices identifying the inclusive start and exclusive end of the valid content of the Tweet.
+
+=back
+
+=head1 SEE ALSO
+
+L<twitter-text|https://github.com/twitter/twitter-text>. This implementation is heavily based on L<Ruby implementation of twitter-text|https://github.com/twitter/twitter-text/tree/master/rb>.
 
 =head1 LICENSE
-
-Copyright 2012-2020 Twitter, Inc and other contributors
 
 Copyright (C) utgwkk.
 
