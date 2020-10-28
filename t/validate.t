@@ -26,6 +26,16 @@ sub expected_parse_result {
 
 my $yaml = load_yaml("validate.yml");
 
+subtest tweets => sub {
+    my $testcases = $yaml->[0]->{tests}->{tweets};
+    for my $testcase (@$testcases) {
+        my $validation_result = is_valid_tweet(convert_yaml_unicode_literal($testcase->{text}), {
+            config => Twitter::Text::Configuration::V2,
+        });
+        is $validation_result, bool($testcase->{expected} eq 'true'), $testcase->{description};
+    }
+};
+
 subtest WeightedTweetsCounterTest => sub {
     my $testcases = $yaml->[0]->{tests}->{WeightedTweetsCounterTest};
 

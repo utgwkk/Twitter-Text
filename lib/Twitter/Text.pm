@@ -22,7 +22,7 @@ use Twitter::Text::Regexp::Emoji;
 use Unicode::Normalize qw(NFC);
 
 our $VERSION = "0.01";
-our @EXPORT = qw(parse_tweet extract_urls extract_urls_with_indices);
+our @EXPORT = qw(is_valid_tweet parse_tweet extract_urls extract_urls_with_indices);
 
 sub extract_emoji_with_indices {
     my ($text) = @_;
@@ -118,6 +118,13 @@ sub is_valid_domain {
     $url_length += $updated_domain_length - $original_domain_length if $updated_domain_length > $original_domain_length;
     $url_length += URL_PROTOCOL_LENGTH unless $protocol;
     return $url_length <= MAX_URL_LENGTH;
+}
+
+sub is_valid_tweet {
+    my ($text) = @_;
+    return parse_tweet($text, {
+        config => Twitter::Text::Configuration::V1,
+    })->{valid};
 }
 
 sub parse_tweet {
@@ -224,7 +231,7 @@ sub parse_tweet {
 sub _empty_parse_results {
     return {
         weighted_length => 0,
-        valid => 1,
+        valid => 0,
         permillage => 0,
         display_range_start => 0,
         display_range_end => 0,
