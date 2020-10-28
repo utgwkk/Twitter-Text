@@ -26,6 +26,7 @@ our $VERSION = "0.01";
 our @EXPORT = qw(
     extract_hashtags
     extract_hashtags_with_indices
+    extract_mentioned_screen_names
     extract_mentioned_screen_names_with_indices
     extract_mentions_or_lists_with_indices
     extract_urls
@@ -102,6 +103,11 @@ sub extract_hashtags_with_indices {
     }
 
     return $tags;
+}
+
+sub extract_mentioned_screen_names {
+    my ($text) = @_;
+    return [ map { $_->{screen_name} } @{ extract_mentioned_screen_names_with_indices($text) } ];
 }
 
 sub extract_mentioned_screen_names_with_indices {

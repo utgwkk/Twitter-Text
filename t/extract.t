@@ -52,6 +52,19 @@ subtest extract_hashtags_with_indices => sub {
     }
 };
 
+subtest extract_mentions => sub {
+    my $testcases = $yaml->[0]->{tests}->{mentions};
+    for my $testcase (@$testcases) {
+        my $parse_result = extract_mentioned_screen_names($testcase->{text});
+        my $expected = $testcase->{expected};
+        $expected = eval($expected) unless ref $expected eq 'ARRAY';
+        is(
+            $parse_result,
+            $expected,
+            $testcase->{description},
+        );
+    }
+};
 subtest extract_mentions_with_indices => sub {
     my $testcases = $yaml->[0]->{tests}->{mentions_with_indices};
     for my $testcase (@$testcases) {
