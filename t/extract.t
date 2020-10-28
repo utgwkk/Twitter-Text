@@ -20,6 +20,20 @@ subtest extract_hashtags => sub {
     }
 };
 
+subtest extract_hashtags_from_astral => sub {
+    my $testcases = $yaml->[0]->{tests}->{hashtags_from_astral};
+    for my $testcase (@$testcases) {
+        my $parse_result = extract_hashtags(convert_yaml_unicode_literal($testcase->{text}));
+        my $expected = convert_yaml_unicode_literal($testcase->{expected});
+        $expected = eval($expected) unless ref $expected eq 'ARRAY';
+        is(
+            $parse_result,
+            $expected,
+            $testcase->{description},
+        );
+    }
+};
+
 subtest extract_hashtags_with_indices => sub {
     my $testcases = $yaml->[0]->{tests}->{hashtags_with_indices};
     for my $testcase (@$testcases) {
