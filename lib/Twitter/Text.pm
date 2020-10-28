@@ -34,6 +34,7 @@ our @EXPORT = qw(
     extract_urls
     extract_urls_with_indices
     is_valid_hashtag
+    is_valid_list
     is_valid_tweet
     parse_tweet
 );
@@ -273,6 +274,14 @@ sub is_valid_hashtag {
     return scalar(@$extracted) == 1 && $extracted->[0] eq (substr $hashtag, 1);
 }
 
+sub is_valid_list {
+    my ($username_list) = @_;
+    return !!(
+        $username_list =~ /\A($Twitter::Text::Regexp::valid_mention_or_list)\z/
+        && $2 eq '' && $5 && length $5
+    );
+}
+
 sub parse_tweet {
     my ($text, $options) = @_;
     # merge options
@@ -476,6 +485,10 @@ The C<parse_tweet> function takes a C<$text> string and optional C<\%options> pa
 =head3 is_valid_hashtag
 
     my $valid = is_valid_hashtag($hashtag);
+
+=head3 is_valid_list
+
+    my $valid = is_valid_list($username_list);
 
 =head1 SEE ALSO
 

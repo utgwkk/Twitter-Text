@@ -44,6 +44,14 @@ subtest hashtags => sub {
     }
 };
 
+subtest lists => sub {
+    my $testcases = $yaml->[0]->{tests}->{lists};
+    for my $testcase (@$testcases) {
+        my $validation_result = is_valid_list(convert_yaml_unicode_literal($testcase->{text}));
+        is $validation_result, bool($testcase->{expected} eq 'true'), $testcase->{description};
+    }
+};
+
 subtest WeightedTweetsCounterTest => sub {
     my $testcases = $yaml->[0]->{tests}->{WeightedTweetsCounterTest};
 
