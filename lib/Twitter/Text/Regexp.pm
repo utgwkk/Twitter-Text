@@ -4,6 +4,8 @@ use warnings;
 use utf8;
 use Twitter::Text::Util qw(load_yaml);
 
+# internal use only, do not use this module directly.
+
 sub regex_range {
     my ($from, $to) = @_;
 

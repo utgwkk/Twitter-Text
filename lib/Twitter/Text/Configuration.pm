@@ -5,6 +5,8 @@ use JSON::XS ();
 use Path::Tiny qw(path);
 use File::Share qw(dist_file);
 
+# internal use only, do not use this module directly.
+
 my %config_cache;
 
 sub configuration_from_file {
