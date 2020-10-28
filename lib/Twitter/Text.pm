@@ -1,5 +1,5 @@
 package Twitter::Text;
-use 5.008001;
+use 5.014001;
 use strict;
 use warnings;
 use utf8;
