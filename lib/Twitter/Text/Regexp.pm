@@ -118,6 +118,18 @@ our $HASHTAG = qr/(\A|\N{U+fe0e}|\N{U+fe0f}|[^&$HASHTAG_LETTERS_NUMERALS])(#|＃
 our $valid_hashtag = qr/$HASHTAG/i;
 our $end_hashtag_match = qr/\A(?:[#＃]|:\/\/)/;
 
+our $valid_mention_preceding_chars = qr/(?:[^a-z0-9_!#\$%&*@＠]|^|(?:^|[^a-z0-9_+~.-])[rR][tT]:?)/i;
+our $at_signs = qr/[@＠]/;
+our $valid_mention_or_list = qr/
+    ($valid_mention_preceding_chars)  # $1: Preceeding character
+    ($at_signs)                       # $2: At mark
+    ([a-z0-9_]{1,20})                             # $3: Screen name
+    (\/[a-z][a-zA-Z0-9_\-]{0,24})?                # $4: List (optional)
+/ix;
+our $valid_reply = qr/^(?:[$UNICODE_SPACES$DIRECTIONAL_CHARACTERS])*$at_signs([a-z0-9_]{1,20})/i;
+# Used in Extractor for final filtering
+our $end_mention_match = qr/\A(?:$at_signs|$latin_accents|:\/\/)/i;
+
 our $valid_subdomain = qr/(?:(?:$DOMAIN_VALID_CHARS(?:[_-]|$DOMAIN_VALID_CHARS)*)?$DOMAIN_VALID_CHARS\.)/io;
 our $valid_domain_name = qr/(?:(?:$DOMAIN_VALID_CHARS(?:[-]|$DOMAIN_VALID_CHARS)*)?$DOMAIN_VALID_CHARS\.)/io;
 
