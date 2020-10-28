@@ -4,6 +4,12 @@ use Test2::Plugin::GitHub::Actions::AnnotateFailedTest;
 use Twitter::Text::Util;
 use Twitter::Text;
 
+sub convert_yaml_unicode_literal {
+    my $text = shift;
+    $text =~ s/\\u([0-9a-f]+)/"\"\\N{U+$1}\""/eegi;
+    $text;
+}
+
 sub expected_parse_result {
     my $testcase = shift;
     hash {
@@ -27,7 +33,7 @@ my $yaml = load_yaml("validate.yml");
 my $testcases = $yaml->[0]->{tests}->{WeightedTweetsWithDiscountedEmojiCounterTest};
 
 for my $testcase (@$testcases) {
-    my $parse_result = parse_tweet($testcase->{text});
+    my $parse_result = parse_tweet(convert_yaml_unicode_literal($testcase->{text}));
     is $parse_result, expected_parse_result($testcase), $testcase->{description};
 }
 
