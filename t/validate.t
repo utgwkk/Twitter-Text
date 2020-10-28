@@ -53,7 +53,6 @@ subtest WeightedTweetsWithDiscountedEmojiCounterTest => sub {
     }
 };
 
-
 subtest UnicodeDirectionalMarkerCounterTest => sub {
     my $testcases = $yaml->[0]->{tests}->{UnicodeDirectionalMarkerCounterTest};
 
