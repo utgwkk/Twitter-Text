@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use JSON::XS ();
 use Path::Tiny qw(path);
+use File::Share qw(dist_file);
 
 my %config_cache;
 
@@ -11,20 +12,7 @@ sub configuration_from_file {
 
     return $config_cache{$config_name} if exists $config_cache{$config_name};
 
-    my @path_candidates = (
-        # ../../../twitter-text/conformance/config/$config_name.json
-        path(__FILE__)->parent->parent->parent->parent->child("twitter-text/config/$config_name.json"),
-        # ../../../../twitter-text/conformance/config/$config_name.json
-        # for `minil test`
-        path(__FILE__)->parent->parent->parent->parent->parent->child("twitter-text/config/$config_name.json"),
-    );
-
-    for my $path (@path_candidates) {
-        next unless $path->is_file;
-        return $config_cache{$config_name} ||= JSON::XS::decode_json($path->slurp);
-    }
-
-    die "$config_name not found";
+    return $config_cache{$config_name} ||= JSON::XS::decode_json(path(dist_file('Twitter-Text', "config/$config_name.json"))->slurp);
 }
 
 sub V1 {

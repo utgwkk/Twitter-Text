@@ -1,6 +1,7 @@
 requires 'perl', '5.008001';
 requires 'Carp';
 requires 'Exporter';
+requires 'File::Share';
 requires 'JSON::XS';
 requires 'List::Util';
 requires 'Net::IDN::Encode';
