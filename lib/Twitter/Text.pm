@@ -33,6 +33,7 @@ our @EXPORT = qw(
     extract_mentions_or_lists_with_indices
     extract_urls
     extract_urls_with_indices
+    is_valid_hashtag
     is_valid_tweet
     parse_tweet
 );
@@ -263,6 +264,15 @@ sub is_valid_tweet {
     })->{valid};
 }
 
+sub is_valid_hashtag {
+    my ($hashtag) = @_;
+
+    return 0 unless length $hashtag;
+
+    my $extracted = extract_hashtags($hashtag);
+    return scalar(@$extracted) == 1 && $extracted->[0] eq (substr $hashtag, 1);
+}
+
 sub parse_tweet {
     my ($text, $options) = @_;
     # merge options
@@ -446,6 +456,10 @@ Please refer L<Implementation progress|https://github.com/utgwkk/Twitter-Text/is
 =head3 parse_tweet
 
     my \%parse_result = parse_tweet($text, [\%options]);
+
+=head3 is_valid_hashtag
+
+    my $valid = is_valid_hashtag($hashtag);
 
 The C<parse_tweet> function takes a C<$text> string and optional C<\%options> parameter and returns a hash reference with following values:
 
