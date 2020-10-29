@@ -470,7 +470,7 @@ Twitter::Text is a Perl implementation of the twitter-text parsing library.
 
 This library does not implement auto-linking and hit highlighting.
 
-Please refer L<Implementation progress|https://github.com/utgwkk/Twitter-Text/issues/5> for latest status.
+Please refer L<Implementation status|https://github.com/utgwkk/Twitter-Text/issues/5> for latest status.
 
 =head1 FUNCTIONS
 
