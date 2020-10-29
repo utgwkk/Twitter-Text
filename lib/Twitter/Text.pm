@@ -23,22 +23,28 @@ use Twitter::Text::Regexp::Emoji;
 use Unicode::Normalize qw(NFC);
 
 our $VERSION = "0.01";
-our @EXPORT = qw(
-    extract_cashtags
-    extract_cashtags_with_indices
-    extract_hashtags
-    extract_hashtags_with_indices
-    extract_mentioned_screen_names
-    extract_mentioned_screen_names_with_indices
-    extract_mentions_or_lists_with_indices
-    extract_urls
-    extract_urls_with_indices
-    is_valid_hashtag
-    is_valid_list
-    is_valid_tweet
-    is_valid_url
-    is_valid_username
-    parse_tweet
+our @EXPORT = (
+    # Extraction
+    qw(
+        extract_cashtags
+        extract_cashtags_with_indices
+        extract_hashtags
+        extract_hashtags_with_indices
+        extract_mentioned_screen_names
+        extract_mentioned_screen_names_with_indices
+        extract_mentions_or_lists_with_indices
+        extract_urls
+        extract_urls_with_indices
+    ),
+    # Validation
+    qw(
+        is_valid_hashtag
+        is_valid_list
+        is_valid_tweet
+        is_valid_url
+        is_valid_username
+        parse_tweet
+    ),
 );
 
 sub extract_emoji_with_indices {
