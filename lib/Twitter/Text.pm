@@ -480,37 +480,59 @@ All functions below are exported by default.
 
 =head3 extract_hashtags
 
-    my \@hashtags = extract_hashtags($text);
+    $hashtags = extract_hashtags($text);
+
+Returns an array reference of extracted hashtag string from C<$text>.
 
 =head3 extract_hashtags_with_indices
 
-    my \@hashtags_with_indices = extract_hashtags_with_indices($text, [\%options]);
+    $hashtags_with_indices = extract_hashtags_with_indices($text, [\%options]);
+
+Returns an array reference of hash reference of extracted hashtag from C<$text>.
+
+Each hash reference consists of C<hashtag> (hashtag string) and C<indices> (range of hashtag).
 
 =head3 extract_mentioned_screen_names
 
-    my \@screen_names = extract_mentioned_screen_names($text);
+    $screen_names = extract_mentioned_screen_names($text);
+
+Returns an array reference of exctacted screen name string from C<$text>.
 
 =head3 extract_mentioned_screen_names_with_indices
 
-    my \@screen_names_with_indices = extract_mentioned_screen_names_with_indices($text);
+    $screen_names_with_indices = extract_mentioned_screen_names_with_indices($text);
+
+Returns an array reference of hash reference of extracted screen name or list from C<$text>.
+
+Each hash reference consists of C<screen_name> (screen name string) and C<indices> (range of screen name).
 
 =head3 extract_mentions_or_lists_with_indices
 
-    my \@mentions_or_lists_with_indices = extract_mentions_or_lists_with_indices($text);
+    $mentions_or_lists_with_indices = extract_mentions_or_lists_with_indices($text);
+
+Returns an array reference of hash reference of extracted screen name from C<$text>.
+
+Each hash reference consists of C<screen_name> (screen name string) and C<indices> (range of screen name or list). If it is a list, the hash reference also contains C<list_slug> item.
 
 =head3 extract_urls
 
-    my \@urls = extract_urls($text);
+    $urls = extract_urls($text);
+
+Returns an array reference of extracted URL string from C<$text>.
 
 =head3 extract_urls_with_indices
 
-    my \@urls = extract_urls_with_indices($text, [\%options]);
+    $urls = extract_urls_with_indices($text, [\%options]);
+
+Returns an array reference of hash reference of extracted URL from C<$text>.
+
+Each hash reference consists of C<url> (URL string) and C<indices> (range of screen name).
 
 =head2 Validation
 
 =head3 parse_tweet
 
-    my \%parse_result = parse_tweet($text, [\%options]);
+    $parse_result = parse_tweet($text, [\%options]);
 
 The C<parse_tweet> function takes a C<$text> string and optional C<\%options> parameter and returns a hash reference with following values:
 
@@ -557,19 +579,31 @@ An array of two unicode code point indices identifying the inclusive start and e
 
 =head3 is_valid_hashtag
 
-    my $valid = is_valid_hashtag($hashtag);
+    $valid = is_valid_hashtag($hashtag);
+
+Validate C<$hashtag> is a valid hashtag and returns a boolean value that indicates if given argument is valid..
 
 =head3 is_valid_list
 
-    my $valid = is_valid_list($username_list);
+    $valid = is_valid_list($username_list);
+
+Validate C<$username_list> is a valid @username/list and returns a boolean value that indicates if given argument corresponds to a valid result..
 
 =head3 is_valid_url
 
-    my $valid = is_valid_url($url, [unicode_domains => 1, require_protocol => 1]);
+    $valid = is_valid_url($url, [unicode_domains => 1, require_protocol => 1]);
+
+Validate C<$url> is a valid URL and returns a boolean value that indicates if given argument is valid..
+
+If C<unicode_domains> argument is a truthy value, validate C<$url> is a valid URL with Unicode characters. (default: true)
+
+If C<require_protocol> argument is a truthy value, validation requires a protocol of URL. (default: true)
 
 =head3 is_valid_username
 
-    my $valid = is_valid_username($username);
+    $valid = is_valid_username($username);
+
+Validate C<$username> is a valid username for Twitter and returns a boolean value that indicates if given argument is valid..
 
 =head1 SEE ALSO
 
