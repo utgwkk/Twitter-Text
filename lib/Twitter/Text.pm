@@ -480,31 +480,53 @@ All functions below are exported by default.
 
 =head3 extract_hashtags
 
-    my \@hashtags = extract_hashtags($text);
+    $hashtags = extract_hashtags($text);
+
+Returns an array reference of extracted hashtag string from C<$text>.
 
 =head3 extract_hashtags_with_indices
 
-    my \@hashtags_with_indices = extract_hashtags_with_indices($text, [\%options]);
+    $hashtags_with_indices = extract_hashtags_with_indices($text, [\%options]);
+
+Returns an array reference of hash reference of extracted hashtag from C<$text>.
+
+Each hash reference consists of C<hashtag> (hashtag string) and C<indices> (range of hashtag).
 
 =head3 extract_mentioned_screen_names
 
-    my \@screen_names = extract_mentioned_screen_names($text);
+    $screen_names = extract_mentioned_screen_names($text);
+
+Returns an array reference of exctacted screen name string from C<$text>.
 
 =head3 extract_mentioned_screen_names_with_indices
 
-    my \@screen_names_with_indices = extract_mentioned_screen_names_with_indices($text);
+    $screen_names_with_indices = extract_mentioned_screen_names_with_indices($text);
+
+Returns an array reference of hash reference of extracted screen name or list from C<$text>.
+
+Each hash reference consists of C<screen_name> (screen name string) and C<indices> (range of screen name).
 
 =head3 extract_mentions_or_lists_with_indices
 
-    my \@mentions_or_lists_with_indices = extract_mentions_or_lists_with_indices($text);
+    $mentions_or_lists_with_indices = extract_mentions_or_lists_with_indices($text);
+
+Returns an array reference of hash reference of extracted screen name from C<$text>.
+
+Each hash reference consists of C<screen_name> (screen name string) and C<indices> (range of screen name or list). If it is a list, the hash reference also contains C<list_slug> item.
 
 =head3 extract_urls
 
-    my \@urls = extract_urls($text);
+    $urls = extract_urls($text);
+
+Returns an array reference of extracted URL string from C<$text>.
 
 =head3 extract_urls_with_indices
 
-    my \@urls = extract_urls_with_indices($text, [\%options]);
+    $urls = extract_urls_with_indices($text, [\%options]);
+
+Returns an array reference of hash reference of extracted URL from C<$text>.
+
+Each hash reference consists of C<url> (URL string) and C<indices> (range of screen name).
 
 =head2 Validation
 
