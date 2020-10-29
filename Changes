@@ -2,6 +2,8 @@ Revision history for Perl extension Twitter-Text
 
 {{$NEXT}}
 
+0.02 2020-10-29T04:24:37Z
+
     - fix documentation for exported functions (github PR: #12)
     - avoid using special variables (`$'`, `$&`) that may cause performance issue (github PR: #11, #13)
     - try to hide internal-use only modules from PAUSE (github PR: #14, #16)
