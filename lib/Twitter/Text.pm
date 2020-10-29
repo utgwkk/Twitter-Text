@@ -508,17 +508,44 @@ The C<parse_tweet> function takes a C<$text> string and optional C<\%options> pa
 
 =over 4
 
-=item C<weighted_length>: the overall length of the tweet with code points weighted per the ranges defined in the configuration file.
+=item C<weighted_length>
 
-=item C<permillage>: indicates the proportion (per thousand) of the weighted length in comparison to the max weighted length. A value > 1000 indicates input text that is longer than the allowable maximum.
+The overall length of the tweet with code points weighted per the ranges defined in the configuration file.
 
-=item C<valid>: indicates if input text length corresponds to a valid result.
+=item C<permillage>
 
-=item C<display_range_start>, C<display_range_end>: An array reference of two unicode code point indices identifying the inclusive start and exclusive end of the displayable content of the Tweet.
+Indicates the proportion (per thousand) of the weighted length in comparison to the max weighted length. A value > 1000 indicates input text that is longer than the allowable maximum.
 
-=item C<vaildRangeStart>, C<valid_range_end>: An array reference of two unicode code point indices identifying the inclusive start and exclusive end of the valid content of the Tweet.
+=item C<valid>
+
+Indicates if input text length corresponds to a valid result.
+
+=item C<display_range_start>, C<display_range_end>
+
+An array of two unicode code point indices identifying the inclusive start and exclusive end of the displayable content of the Tweet.
+
+=item C<valid_range_start>, C<valid_range_end>
+
+An array of two unicode code point indices identifying the inclusive start and exclusive end of the valid content of the Tweet.
 
 =back
+
+=head4 EXAMPLES
+
+    use Data::Dumper;
+    use Twitter::Text;
+
+    $result = parse_tweet('Hello world こんにちは世界');
+    print Dumper($result);
+    # $VAR1 = {
+    #       'weighted_length' => 33
+    #       'permillage' => 117,
+    #       'valid' => 1,
+    #       'display_range_start' => 0,
+    #       'display_range_end' => 32,
+    #       'valid_range_start' => 0,
+    #       'valid_range_end' => 32,
+    #     };
 
 =head3 is_valid_hashtag
 
