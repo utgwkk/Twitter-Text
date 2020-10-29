@@ -307,8 +307,8 @@ sub is_valid_url {
 
 sub valid_match {
     my ($string, $regex, $optional) = @_;
-    return (defined $string && ($string =~ $regex) && $& eq $string) unless $optional;
-    return !(defined $string && (!($string =~ $regex) || $& ne $string));
+    return (defined $string && ($string =~ /($regex)/) && $1 eq $string) unless $optional;
+    return !(defined $string && (!($string =~ /($regex)/) || $1 ne $string));
 }
 
 sub is_valid_username {
