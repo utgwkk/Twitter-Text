@@ -27,37 +27,59 @@ All functions below are exported by default.
 
 ### extract\_hashtags
 
-    my \@hashtags = extract_hashtags($text);
+    $hashtags = extract_hashtags($text);
+
+Returns an array reference of extracted hashtag string from `$text`.
 
 ### extract\_hashtags\_with\_indices
 
-    my \@hashtags_with_indices = extract_hashtags_with_indices($text, [\%options]);
+    $hashtags_with_indices = extract_hashtags_with_indices($text, [\%options]);
+
+Returns an array reference of hash reference of extracted hashtag from `$text`.
+
+Each hash reference consists of `hashtag` (hashtag string) and `indices` (range of hashtag).
 
 ### extract\_mentioned\_screen\_names
 
-    my \@screen_names = extract_mentioned_screen_names($text);
+    $screen_names = extract_mentioned_screen_names($text);
+
+Returns an array reference of exctacted screen name string from `$text`.
 
 ### extract\_mentioned\_screen\_names\_with\_indices
 
-    my \@screen_names_with_indices = extract_mentioned_screen_names_with_indices($text);
+    $screen_names_with_indices = extract_mentioned_screen_names_with_indices($text);
+
+Returns an array reference of hash reference of extracted screen name or list from `$text`.
+
+Each hash reference consists of `screen_name` (screen name string) and `indices` (range of screen name).
 
 ### extract\_mentions\_or\_lists\_with\_indices
 
-    my \@mentions_or_lists_with_indices = extract_mentions_or_lists_with_indices($text);
+    $mentions_or_lists_with_indices = extract_mentions_or_lists_with_indices($text);
+
+Returns an array reference of hash reference of extracted screen name from `$text`.
+
+Each hash reference consists of `screen_name` (screen name string) and `indices` (range of screen name or list). If it is a list, the hash reference also contains `list_slug` item.
 
 ### extract\_urls
 
-    my \@urls = extract_urls($text);
+    $urls = extract_urls($text);
+
+Returns an array reference of extracted URL string from `$text`.
 
 ### extract\_urls\_with\_indices
 
-    my \@urls = extract_urls_with_indices($text, [\%options]);
+    $urls = extract_urls_with_indices($text, [\%options]);
+
+Returns an array reference of hash reference of extracted URL from `$text`.
+
+Each hash reference consists of `url` (URL string) and `indices` (range of screen name).
 
 ## Validation
 
 ### parse\_tweet
 
-    my \%parse_result = parse_tweet($text, [\%options]);
+    $parse_result = parse_tweet($text, [\%options]);
 
 The `parse_tweet` function takes a `$text` string and optional `\%options` parameter and returns a hash reference with following values:
 
@@ -100,19 +122,31 @@ The `parse_tweet` function takes a `$text` string and optional `\%options` param
 
 ### is\_valid\_hashtag
 
-    my $valid = is_valid_hashtag($hashtag);
+    $valid = is_valid_hashtag($hashtag);
+
+Validate `$hashtag` is a valid hashtag and returns a boolean value that indicates if given argument is valid..
 
 ### is\_valid\_list
 
-    my $valid = is_valid_list($username_list);
+    $valid = is_valid_list($username_list);
+
+Validate `$username_list` is a valid @username/list and returns a boolean value that indicates if given argument corresponds to a valid result..
 
 ### is\_valid\_url
 
-    my $valid = is_valid_url($url, [unicode_domains => 1, require_protocol => 1]);
+    $valid = is_valid_url($url, [unicode_domains => 1, require_protocol => 1]);
+
+Validate `$url` is a valid URL and returns a boolean value that indicates if given argument is valid..
+
+If `unicode_domains` argument is a truthy value, validate `$url` is a valid URL with Unicode characters. (default: true)
+
+If `require_protocol` argument is a truthy value, validation requires a protocol of URL. (default: true)
 
 ### is\_valid\_username
 
-    my $valid = is_valid_username($username);
+    $valid = is_valid_username($username);
+
+Validate `$username` is a valid username for Twitter and returns a boolean value that indicates if given argument is valid..
 
 # SEE ALSO
 
