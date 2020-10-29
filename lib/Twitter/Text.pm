@@ -524,7 +524,7 @@ Indicates if input text length corresponds to a valid result.
 
 An array of two unicode code point indices identifying the inclusive start and exclusive end of the displayable content of the Tweet.
 
-=item C<vaildRangeStart>, C<valid_range_end>
+=item C<valid_range_start>, C<valid_range_end>
 
 An array of two unicode code point indices identifying the inclusive start and exclusive end of the valid content of the Tweet.
 
