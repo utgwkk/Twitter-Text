@@ -73,11 +73,11 @@ The `parse_tweet` function takes a `$text` string and optional `\%options` param
 
 - `display_range_start`, `display_range_end`
 
-    An array reference of two unicode code point indices identifying the inclusive start and exclusive end of the displayable content of the Tweet.
+    An array of two unicode code point indices identifying the inclusive start and exclusive end of the displayable content of the Tweet.
 
 - `vaildRangeStart`, `valid_range_end`
 
-    An array reference of two unicode code point indices identifying the inclusive start and exclusive end of the valid content of the Tweet.
+    An array of two unicode code point indices identifying the inclusive start and exclusive end of the valid content of the Tweet.
 
 ### is\_valid\_hashtag
 
