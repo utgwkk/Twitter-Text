@@ -510,7 +510,7 @@ All functions below are exported by default.
 
 =head3 parse_tweet
 
-    my \%parse_result = parse_tweet($text, [\%options]);
+    $parse_result = parse_tweet($text, [\%options]);
 
 The C<parse_tweet> function takes a C<$text> string and optional C<\%options> parameter and returns a hash reference with following values:
 
@@ -557,19 +557,31 @@ An array of two unicode code point indices identifying the inclusive start and e
 
 =head3 is_valid_hashtag
 
-    my $valid = is_valid_hashtag($hashtag);
+    $valid = is_valid_hashtag($hashtag);
+
+Validate C<$hashtag> is a valid hashtag and returns a boolean value that indicates if given argument is valid..
 
 =head3 is_valid_list
 
-    my $valid = is_valid_list($username_list);
+    $valid = is_valid_list($username_list);
+
+Validate C<$username_list> is a valid @username/list and returns a boolean value that indicates if given argument corresponds to a valid result..
 
 =head3 is_valid_url
 
-    my $valid = is_valid_url($url, [unicode_domains => 1, require_protocol => 1]);
+    $valid = is_valid_url($url, [unicode_domains => 1, require_protocol => 1]);
+
+Validate C<$url> is a valid URL and returns a boolean value that indicates if given argument is valid..
+
+If C<unicode_domains> argument is a truthy value, validate C<$url> is a valid URL with Unicode characters. (default: true)
+
+If C<require_protocol> argument is a truthy value, validation requires a protocol of URL. (default: true)
 
 =head3 is_valid_username
 
-    my $valid = is_valid_username($username);
+    $valid = is_valid_username($username);
+
+Validate C<$username> is a valid username for Twitter and returns a boolean value that indicates if given argument is valid..
 
 =head1 SEE ALSO
 
