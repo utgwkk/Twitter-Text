@@ -124,19 +124,19 @@ The `parse_tweet` function takes a `$text` string and optional `\%options` param
 
     $valid = is_valid_hashtag($hashtag);
 
-Validate `$hashtag` is a valid hashtag and returns a boolean value that indicates if given argument is valid..
+Validate `$hashtag` is a valid hashtag and returns a boolean value that indicates if given argument is valid.
 
 ### is\_valid\_list
 
     $valid = is_valid_list($username_list);
 
-Validate `$username_list` is a valid @username/list and returns a boolean value that indicates if given argument corresponds to a valid result..
+Validate `$username_list` is a valid @username/list and returns a boolean value that indicates if given argument corresponds to a valid result.
 
 ### is\_valid\_url
 
     $valid = is_valid_url($url, [unicode_domains => 1, require_protocol => 1]);
 
-Validate `$url` is a valid URL and returns a boolean value that indicates if given argument is valid..
+Validate `$url` is a valid URL and returns a boolean value that indicates if given argument is valid.
 
 If `unicode_domains` argument is a truthy value, validate `$url` is a valid URL with Unicode characters. (default: true)
 
@@ -146,7 +146,7 @@ If `require_protocol` argument is a truthy value, validation requires a protocol
 
     $valid = is_valid_username($username);
 
-Validate `$username` is a valid username for Twitter and returns a boolean value that indicates if given argument is valid..
+Validate `$username` is a valid username for Twitter and returns a boolean value that indicates if given argument is valid.
 
 # SEE ALSO
 

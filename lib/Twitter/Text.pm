@@ -581,19 +581,19 @@ An array of two unicode code point indices identifying the inclusive start and e
 
     $valid = is_valid_hashtag($hashtag);
 
-Validate C<$hashtag> is a valid hashtag and returns a boolean value that indicates if given argument is valid..
+Validate C<$hashtag> is a valid hashtag and returns a boolean value that indicates if given argument is valid.
 
 =head3 is_valid_list
 
     $valid = is_valid_list($username_list);
 
-Validate C<$username_list> is a valid @username/list and returns a boolean value that indicates if given argument corresponds to a valid result..
+Validate C<$username_list> is a valid @username/list and returns a boolean value that indicates if given argument corresponds to a valid result.
 
 =head3 is_valid_url
 
     $valid = is_valid_url($url, [unicode_domains => 1, require_protocol => 1]);
 
-Validate C<$url> is a valid URL and returns a boolean value that indicates if given argument is valid..
+Validate C<$url> is a valid URL and returns a boolean value that indicates if given argument is valid.
 
 If C<unicode_domains> argument is a truthy value, validate C<$url> is a valid URL with Unicode characters. (default: true)
 
@@ -603,7 +603,7 @@ If C<require_protocol> argument is a truthy value, validation requires a protoco
 
     $valid = is_valid_username($username);
 
-Validate C<$username> is a valid username for Twitter and returns a boolean value that indicates if given argument is valid..
+Validate C<$username> is a valid username for Twitter and returns a boolean value that indicates if given argument is valid.
 
 =head1 SEE ALSO
 
