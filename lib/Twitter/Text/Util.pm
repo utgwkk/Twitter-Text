@@ -1,4 +1,5 @@
-package Twitter::Text::Util;
+package
+    Twitter::Text::Util; # hide from PAUSE
 use strict;
 use warnings;
 use Exporter 'import';

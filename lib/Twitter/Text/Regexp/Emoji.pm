@@ -1,4 +1,5 @@
-package Twitter::Text::Regexp::Emoji;
+package
+    Twitter::Text::Regexp::Emoji; # hide from PAUSE
 use strict;
 use warnings;
 use utf8;
