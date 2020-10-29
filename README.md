@@ -79,6 +79,23 @@ The `parse_tweet` function takes a `$text` string and optional `\%options` param
 
     An array of two unicode code point indices identifying the inclusive start and exclusive end of the valid content of the Tweet.
 
+#### EXAMPLES
+
+    use Data::Dumper;
+    use Twitter::Text;
+
+    $result = parse_tweet('Hello world こんにちは世界');
+    print Dumper($result);
+    # $VAR1 = {
+    #       'weighted_length' => 33
+    #       'permillage' => 117,
+    #       'valid' => 1,
+    #       'display_range_start' => 0,
+    #       'display_range_end' => 32,
+    #       'valid_range_start' => 0,
+    #       'valid_range_end' => 32,
+    #     };
+
 ### is\_valid\_hashtag
 
     my $valid = is_valid_hashtag($hashtag);
