@@ -108,11 +108,11 @@ sub extract_hashtags_with_indices {
 
     my $tags = [];
 
-    while ($text =~ /($Twitter::Text::Regexp::valid_hashtag)/g) {
+    while ($text =~ /($Twitter::Text::Regexp::valid_hashtag)/gp) {
         my ($before, $hash, $hash_text) = ($2, $3, $4);
         my $start_position = $-[3];
         my $end_position = $+[4];
-        my $after = $';
+        my $after = ${^POSTMATCH};
         unless ($after =~ $Twitter::Text::Regexp::end_hashtag_match) {
             push @$tags, {
                 hashtag => $hash_text,
@@ -163,11 +163,11 @@ sub extract_mentions_or_lists_with_indices {
     return [] unless $text =~ /[@＠]/;
 
     my $possible_entries = [];
-    while ($text =~ /($Twitter::Text::Regexp::valid_mention_or_list)/g) {
+    while ($text =~ /($Twitter::Text::Regexp::valid_mention_or_list)/gp) {
         my ($before, $at, $screen_name, $list_slug) = ($2, $3, $4, $5);
         my $start_position = $-[4] - 1;
         my $end_position = $+[defined $list_slug ? 5 : 4];
-        my $after = $';
+        my $after = ${^POSTMATCH};
         unless ($after =~ $Twitter::Text::Regexp::end_mention_match) {
             push @$possible_entries, {
                 screen_name => $screen_name,
