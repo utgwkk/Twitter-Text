@@ -21,6 +21,8 @@ Please refer [Implementation progress](https://github.com/utgwkk/Twitter-Text/is
 
 # FUNCTIONS
 
+All functions below are exported by default.
+
 ## Extraction
 
 ### extract\_hashtags

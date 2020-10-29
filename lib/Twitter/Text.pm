@@ -468,6 +468,8 @@ Please refer L<Implementation progress|https://github.com/utgwkk/Twitter-Text/is
 
 =head1 FUNCTIONS
 
+All functions below are exported by default.
+
 =head2 Extraction
 
 =head3 extract_hashtags
