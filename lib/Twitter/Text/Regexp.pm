@@ -1,4 +1,5 @@
-package Twitter::Text::Regexp;
+package
+    Twitter::Text::Regexp; # hide from PAUSE
 use strict;
 use warnings;
 use utf8;
