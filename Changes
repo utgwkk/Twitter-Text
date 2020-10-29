@@ -2,6 +2,8 @@ Revision history for Perl extension Twitter-Text
 
 {{$NEXT}}
 
+    - Write POD of exported functions (github PR: #18)
+
 0.02 2020-10-29T04:24:37Z
 
     - fix documentation for exported functions (github PR: #12)
