@@ -11,10 +11,10 @@ jobs:
     strategy:
       matrix:
         perl-version: 
-          - 5.26
-          - 5.28
-          - 5.30
-          - 5.32
+          - '5.26'
+          - '5.28'
+          - '5.30'
+          - '5.32'
     runs-on: ubuntu-latest
     name: Perl ${{ matrix.perl-version }}
     steps:
