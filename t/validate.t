@@ -9,7 +9,7 @@ sub expected_parse_result {
     my $testcase = shift;
     hash {
         field weighted_length => $testcase->{expected}->{weightedLength};
-        field valid => bool($testcase->{expected}->{valid} eq 'true');
+        field valid => bool($testcase->{expected}->{valid});
         field permillage => $testcase->{expected}->{permillage};
         # Note that we don't assert display and valid ranges
         #field display_range_start => $testcase->{expected}->{displayRangeStart};
@@ -29,50 +29,50 @@ my $yaml = load_yaml("validate.yml");
 subtest tweets => sub {
     my $testcases = $yaml->[0]->{tests}->{tweets};
     for my $testcase (@$testcases) {
-        my $validation_result = is_valid_tweet(convert_yaml_unicode_literal($testcase->{text}), {
+        my $validation_result = is_valid_tweet($testcase->{text}, {
             config => Twitter::Text::Configuration::V2,
         });
-        is $validation_result, bool($testcase->{expected} eq 'true'), $testcase->{description};
+        is $validation_result, bool($testcase->{expected}), $testcase->{description};
     }
 };
 
 subtest hashtags => sub {
     my $testcases = $yaml->[0]->{tests}->{hashtags};
     for my $testcase (@$testcases) {
-        my $validation_result = is_valid_hashtag(convert_yaml_unicode_literal($testcase->{text}));
-        is $validation_result, bool($testcase->{expected} eq 'true'), $testcase->{description};
+        my $validation_result = is_valid_hashtag($testcase->{text});
+        is $validation_result, bool($testcase->{expected}), $testcase->{description};
     }
 };
 
 subtest lists => sub {
     my $testcases = $yaml->[0]->{tests}->{lists};
     for my $testcase (@$testcases) {
-        my $validation_result = is_valid_list(convert_yaml_unicode_literal($testcase->{text}));
-        is $validation_result, bool($testcase->{expected} eq 'true'), $testcase->{description};
+        my $validation_result = is_valid_list($testcase->{text});
+        is $validation_result, bool($testcase->{expected}), $testcase->{description};
     }
 };
 
 subtest urls => sub {
     my $testcases = $yaml->[0]->{tests}->{urls};
     for my $testcase (@$testcases) {
-        my $validation_result = is_valid_url(convert_yaml_unicode_literal($testcase->{text}));
-        is $validation_result, bool($testcase->{expected} eq 'true'), $testcase->{description};
+        my $validation_result = is_valid_url($testcase->{text});
+        is $validation_result, bool($testcase->{expected}), $testcase->{description};
     }
 };
 
 subtest urls_without_protocol => sub {
     my $testcases = $yaml->[0]->{tests}->{urls_without_protocol};
     for my $testcase (@$testcases) {
-        my $validation_result = is_valid_url(convert_yaml_unicode_literal($testcase->{text}), require_protocol => 0);
-        is $validation_result, bool($testcase->{expected} eq 'true'), $testcase->{description} , $testcase->{text};
+        my $validation_result = is_valid_url($testcase->{text}, require_protocol => 0);
+        is $validation_result, bool($testcase->{expected}), $testcase->{description} , $testcase->{text};
     }
 };
 
 subtest usernames => sub {
     my $testcases = $yaml->[0]->{tests}->{usernames};
     for my $testcase (@$testcases) {
-        my $validation_result = is_valid_username(convert_yaml_unicode_literal($testcase->{text}));
-        is $validation_result, bool($testcase->{expected} eq 'true'), $testcase->{description};
+        my $validation_result = is_valid_username($testcase->{text});
+        is $validation_result, bool($testcase->{expected}), $testcase->{description};
     }
 };
 
@@ -80,7 +80,7 @@ subtest WeightedTweetsCounterTest => sub {
     my $testcases = $yaml->[0]->{tests}->{WeightedTweetsCounterTest};
 
     for my $testcase (@$testcases) {
-        my $parse_result = parse_tweet(convert_yaml_unicode_literal($testcase->{text}), {
+        my $parse_result = parse_tweet($testcase->{text}, {
             config => Twitter::Text::Configuration::V2,
         });
         is $parse_result, expected_parse_result($testcase), $testcase->{description};
@@ -91,7 +91,7 @@ subtest WeightedTweetsWithDiscountedEmojiCounterTest => sub {
     my $testcases = $yaml->[0]->{tests}->{WeightedTweetsWithDiscountedEmojiCounterTest};
 
     for my $testcase (@$testcases) {
-        my $parse_result = parse_tweet(convert_yaml_unicode_literal($testcase->{text}));
+        my $parse_result = parse_tweet($testcase->{text});
         is $parse_result, expected_parse_result($testcase), $testcase->{description};
     }
 };
@@ -100,7 +100,7 @@ subtest UnicodeDirectionalMarkerCounterTest => sub {
     my $testcases = $yaml->[0]->{tests}->{UnicodeDirectionalMarkerCounterTest};
 
     for my $testcase (@$testcases) {
-        my $parse_result = parse_tweet(convert_yaml_unicode_literal($testcase->{text}));
+        my $parse_result = parse_tweet($testcase->{text});
         is $parse_result, expected_parse_result($testcase), $testcase->{description};
     }
 };
