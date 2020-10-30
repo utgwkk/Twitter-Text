@@ -9,12 +9,10 @@ my $yaml = load_yaml("extract.yml");
 subtest extract_hashtags => sub {
     my $testcases = $yaml->[0]->{tests}->{hashtags};
     for my $testcase (@$testcases) {
-        my $parse_result = extract_hashtags(convert_yaml_unicode_literal($testcase->{text}));
-        my $expected = $testcase->{expected};
-        $expected = eval($expected) unless ref $expected eq 'ARRAY';
+        my $parse_result = extract_hashtags($testcase->{text});
         is(
             $parse_result,
-            $expected,
+            $testcase->{expected},
             $testcase->{description},
         );
     }
@@ -23,12 +21,10 @@ subtest extract_hashtags => sub {
 subtest extract_hashtags_from_astral => sub {
     my $testcases = $yaml->[0]->{tests}->{hashtags_from_astral};
     for my $testcase (@$testcases) {
-        my $parse_result = extract_hashtags(convert_yaml_unicode_literal($testcase->{text}));
-        my $expected = convert_yaml_unicode_literal($testcase->{expected});
-        $expected = eval($expected) unless ref $expected eq 'ARRAY';
+        my $parse_result = extract_hashtags($testcase->{text});
         is(
             $parse_result,
-            $expected,
+            $testcase->{expected},
             $testcase->{description},
         );
     }
@@ -37,16 +33,10 @@ subtest extract_hashtags_from_astral => sub {
 subtest extract_hashtags_with_indices => sub {
     my $testcases = $yaml->[0]->{tests}->{hashtags_with_indices};
     for my $testcase (@$testcases) {
-        my $parse_result = extract_hashtags_with_indices(convert_yaml_unicode_literal($testcase->{text}));
-        my $expected = [ map {
-            {
-                hashtag => $_->{hashtag},
-                indices => eval($_->{indices}),
-            };
-        } @{$testcase->{expected}} ];
+        my $parse_result = extract_hashtags_with_indices($testcase->{text});
         is(
             $parse_result,
-            $expected,
+            $testcase->{expected},
             $testcase->{description},
         );
     }
@@ -56,11 +46,9 @@ subtest extract_mentions => sub {
     my $testcases = $yaml->[0]->{tests}->{mentions};
     for my $testcase (@$testcases) {
         my $parse_result = extract_mentioned_screen_names($testcase->{text});
-        my $expected = $testcase->{expected};
-        $expected = eval($expected) unless ref $expected eq 'ARRAY';
         is(
             $parse_result,
-            $expected,
+            $testcase->{expected},
             $testcase->{description},
         );
     }
@@ -69,16 +57,10 @@ subtest extract_mentions => sub {
 subtest extract_mentions_with_indices => sub {
     my $testcases = $yaml->[0]->{tests}->{mentions_with_indices};
     for my $testcase (@$testcases) {
-        my $parse_result = extract_mentioned_screen_names_with_indices(convert_yaml_unicode_literal($testcase->{text}));
-        my $expected = [ map {
-            {
-                screen_name => $_->{screen_name},
-                indices => eval($_->{indices}),
-            };
-        } @{$testcase->{expected}} ];
+        my $parse_result = extract_mentioned_screen_names_with_indices($testcase->{text});
         is(
             $parse_result,
-            $expected,
+            $testcase->{expected},
             $testcase->{description},
         );
     }
@@ -87,17 +69,10 @@ subtest extract_mentions_with_indices => sub {
 subtest extract_mentions_or_lists_with_indices => sub {
     my $testcases = $yaml->[0]->{tests}->{mentions_or_lists_with_indices};
     for my $testcase (@$testcases) {
-        my $parse_result = extract_mentions_or_lists_with_indices(convert_yaml_unicode_literal($testcase->{text}));
-        my $expected = [ map {
-            {
-                screen_name => $_->{screen_name},
-                list_slug => $_->{list_slug},
-                indices => eval($_->{indices}),
-            };
-        } @{$testcase->{expected}} ];
+        my $parse_result = extract_mentions_or_lists_with_indices($testcase->{text});
         is(
             $parse_result,
-            $expected,
+            $testcase->{expected},
             $testcase->{description},
         );
     }
@@ -108,7 +83,6 @@ subtest extract_urls => sub {
     for my $testcase (@$testcases) {
         my $parse_result = extract_urls($testcase->{text});
         my $expected = $testcase->{expected};
-        $expected = eval($expected) unless ref $expected eq 'ARRAY';
         is(
             $parse_result,
             $expected,
@@ -120,11 +94,11 @@ subtest extract_urls => sub {
 subtest extract_urls_with_indices => sub {
     my $testcases = $yaml->[0]->{tests}->{urls_with_indices};
     for my $testcase (@$testcases) {
-        my $parse_result = extract_urls_with_indices(convert_yaml_unicode_literal($testcase->{text}));
+        my $parse_result = extract_urls_with_indices($testcase->{text});
         is $parse_result, [ map {
             {
                 url => $_->{url},
-                indices => eval($_->{indices}), # XXX: treal YAML's array as Perl's ArrayRef
+                indices => $_->{indices},
             }
         } @{$testcase->{expected}} ], $testcase->{description};
     }
@@ -133,11 +107,11 @@ subtest extract_urls_with_indices => sub {
 subtest extract_urls_with_directional_markers => sub {
     my $testcases = $yaml->[0]->{tests}->{urls_with_directional_markers};
     for my $testcase (@$testcases) {
-        my $parse_result = extract_urls_with_indices(convert_yaml_unicode_literal($testcase->{text}));
+        my $parse_result = extract_urls_with_indices($testcase->{text});
         is $parse_result, [ map {
             {
                 url => $_->{url},
-                indices => eval($_->{indices}), # XXX: treal YAML's array as Perl's ArrayRef
+                indices => $_->{indices},
             }
         } @{$testcase->{expected}} ], $testcase->{description};
     }
@@ -148,7 +122,6 @@ subtest extract_cashtags => sub {
     for my $testcase (@$testcases) {
         my $parse_result = extract_cashtags($testcase->{text});
         my $expected = $testcase->{expected};
-        $expected = eval($expected) unless ref $expected eq 'ARRAY';
         is(
             $parse_result,
             $expected,
@@ -160,13 +133,12 @@ subtest extract_cashtags => sub {
 subtest extract_cashtags_with_indices => sub {
     my $testcases = $yaml->[0]->{tests}->{cashtags_with_indices};
     for my $testcase (@$testcases) {
-        my $parse_result = extract_cashtags_with_indices(convert_yaml_unicode_literal($testcase->{text}));
-        is $parse_result, [ map {
-            {
-                cashtag => $_->{cashtag},
-                indices => eval($_->{indices}), # XXX: treal YAML's array as Perl's ArrayRef
-            }
-        } @{$testcase->{expected}} ], $testcase->{description};
+        my $parse_result = extract_cashtags_with_indices($testcase->{text});
+        is(
+            $parse_result,
+            $testcase->{expected},
+            $testcase->{description},
+        );
     }
 };
 

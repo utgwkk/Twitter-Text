@@ -8,7 +8,7 @@ requires 'List::UtilsBy';
 requires 'Net::IDN::Encode';
 requires 'Path::Tiny';
 requires 'Unicode::Normalize';
-requires 'YAML::Tiny';
+requires 'YAML::PP';
 
 on 'test' => sub {
     requires 'Test::More', '0.98';
