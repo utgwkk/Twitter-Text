@@ -302,16 +302,16 @@ sub is_valid_url {
 
     my ($scheme, $authorithy, $path, $query, $fragment) = ($2, $3, $4, $5, $6);
     return 0 unless ((!$require_protocol ||
-                      (valid_match($scheme, $Twitter::Text::Regexp::validate_url_scheme) && $scheme =~ /\Ahttps?\Z/i)) &&
-                    valid_match($path, $Twitter::Text::Regexp::validate_url_path) &&
-                    valid_match($query, $Twitter::Text::Regexp::validate_url_query, 1) &&
-                    valid_match($fragment, $Twitter::Text::Regexp::validate_url_fragment, 1));
+                      (_valid_match($scheme, $Twitter::Text::Regexp::validate_url_scheme) && $scheme =~ /\Ahttps?\Z/i)) &&
+                    _valid_match($path, $Twitter::Text::Regexp::validate_url_path) &&
+                    _valid_match($query, $Twitter::Text::Regexp::validate_url_query, 1) &&
+                    _valid_match($fragment, $Twitter::Text::Regexp::validate_url_fragment, 1));
 
-    return ($unicode_domains && valid_match($authorithy, $Twitter::Text::Regexp::validate_url_unicode_authority)) ||
-           (!$unicode_domains && valid_match($authorithy, $Twitter::Text::Regexp::validate_url_authorithy));
+    return ($unicode_domains && _valid_match($authorithy, $Twitter::Text::Regexp::validate_url_unicode_authority)) ||
+           (!$unicode_domains && _valid_match($authorithy, $Twitter::Text::Regexp::validate_url_authorithy));
 }
 
-sub valid_match {
+sub _valid_match {
     my ($string, $regex, $optional) = @_;
     return (defined $string && ($string =~ /($regex)/) && $1 eq $string) unless $optional;
     return !(defined $string && (!($string =~ /($regex)/) || $1 ne $string));
