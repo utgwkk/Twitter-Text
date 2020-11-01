@@ -62,7 +62,7 @@ sub extract_emoji_with_indices {
     return $emoji;
 }
 
-sub remove_overlapping_entities {
+sub _remove_overlapping_entities {
     my ($entities) = @_;
 
     $entities = [ nsort_by { $_->{indices}->[0] } @$entities ];
@@ -132,7 +132,7 @@ sub extract_hashtags_with_indices {
         if (@$urls) {
             $tags = [ @$tags, @$urls ];
             # remove duplicates
-            $tags = remove_overlapping_entities($tags);
+            $tags = _remove_overlapping_entities($tags);
             # remove URL entities
             $tags = [ grep { $_->{hashtag} } @$tags ];
         }
