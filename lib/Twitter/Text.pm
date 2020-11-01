@@ -214,7 +214,7 @@ sub extract_urls_with_indices {
             my $last_url;
             while ($domain =~ /($Twitter::Text::Regexp::valid_ascii_domain)/g) {
                 my $ascii_domain = $1;
-                next unless is_valid_domain(length $url, $ascii_domain, $protocol);
+                next unless _is_valid_domain(length $url, $ascii_domain, $protocol);
                 $last_url = {
                     url => $ascii_domain,
                     indices => [ $start + $-[0], $start + $+[0] ],
@@ -238,7 +238,7 @@ sub extract_urls_with_indices {
                 $end = $start + length $url;
             }
 
-            next unless is_valid_domain(length $url, $domain, $protocol);
+            next unless _is_valid_domain(length $url, $domain, $protocol);
 
             push @$urls, {
                 url => $url,
@@ -251,7 +251,7 @@ sub extract_urls_with_indices {
     return $urls;
 }
 
-sub is_valid_domain {
+sub _is_valid_domain {
     my ($url_length, $domain, $protocol) = @_;
     croak 'invalid empty domain' unless $domain;
 
