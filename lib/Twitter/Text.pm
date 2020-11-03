@@ -16,7 +16,7 @@ use Carp qw(croak);
 use Exporter 'import';
 use List::Util qw(min);
 use List::UtilsBy qw(nsort_by);
-use Net::IDN::Encode ':all';
+use Net::IDN::Encode qw(domain_to_ascii);
 use Twitter::Text::Configuration;
 use Twitter::Text::Regexp;
 use Twitter::Text::Regexp::Emoji;
