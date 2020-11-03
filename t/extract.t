@@ -8,6 +8,7 @@ my $yaml = load_yaml("extract.yml");
 
 subtest extract_hashtags => sub {
     my $testcases = $yaml->[0]->{tests}->{hashtags};
+
     for my $testcase (@$testcases) {
         my $parse_result = extract_hashtags($testcase->{text});
         is(
@@ -20,6 +21,7 @@ subtest extract_hashtags => sub {
 
 subtest extract_hashtags_from_astral => sub {
     my $testcases = $yaml->[0]->{tests}->{hashtags_from_astral};
+
     for my $testcase (@$testcases) {
         my $parse_result = extract_hashtags($testcase->{text});
         is(
@@ -32,6 +34,7 @@ subtest extract_hashtags_from_astral => sub {
 
 subtest extract_hashtags_with_indices => sub {
     my $testcases = $yaml->[0]->{tests}->{hashtags_with_indices};
+
     for my $testcase (@$testcases) {
         my $parse_result = extract_hashtags_with_indices($testcase->{text});
         is(
@@ -52,7 +55,7 @@ subtest extract_hashtags_with_indices => sub {
         [
             {
                 hashtag => 'hoge',
-                indices => [20, 25],
+                indices => [ 20, 25 ],
             }
         ],
         "Don't check URL overlap",
@@ -61,6 +64,7 @@ subtest extract_hashtags_with_indices => sub {
 
 subtest extract_mentions => sub {
     my $testcases = $yaml->[0]->{tests}->{mentions};
+
     for my $testcase (@$testcases) {
         my $parse_result = extract_mentioned_screen_names($testcase->{text});
         is(
@@ -73,6 +77,7 @@ subtest extract_mentions => sub {
 
 subtest extract_mentions_with_indices => sub {
     my $testcases = $yaml->[0]->{tests}->{mentions_with_indices};
+
     for my $testcase (@$testcases) {
         my $parse_result = extract_mentioned_screen_names_with_indices($testcase->{text});
         is(
@@ -97,6 +102,7 @@ subtest extract_mentions_with_indices => sub {
 
 subtest extract_mentions_or_lists_with_indices => sub {
     my $testcases = $yaml->[0]->{tests}->{mentions_or_lists_with_indices};
+
     for my $testcase (@$testcases) {
         my $parse_result = extract_mentions_or_lists_with_indices($testcase->{text});
         is(
@@ -115,9 +121,10 @@ subtest extract_mentions_or_lists_with_indices => sub {
 
 subtest extract_urls => sub {
     my $testcases = $yaml->[0]->{tests}->{urls};
+
     for my $testcase (@$testcases) {
         my $parse_result = extract_urls($testcase->{text});
-        my $expected = $testcase->{expected};
+        my $expected     = $testcase->{expected};
         is(
             $parse_result,
             $expected,
@@ -128,14 +135,18 @@ subtest extract_urls => sub {
 
 subtest extract_urls_with_indices => sub {
     my $testcases = $yaml->[0]->{tests}->{urls_with_indices};
+
     for my $testcase (@$testcases) {
         my $parse_result = extract_urls_with_indices($testcase->{text});
-        is $parse_result, [ map {
-            {
-                url => $_->{url},
-                indices => $_->{indices},
-            }
-        } @{$testcase->{expected}} ], $testcase->{description};
+        is $parse_result, [
+            map {
+                {
+                    url     => $_->{url},
+                    indices => $_->{indices},
+                }
+            } @{ $testcase->{expected} }
+            ],
+            $testcase->{description};
     }
 
     is(
@@ -153,22 +164,27 @@ subtest extract_urls_with_indices => sub {
 
 subtest extract_urls_with_directional_markers => sub {
     my $testcases = $yaml->[0]->{tests}->{urls_with_directional_markers};
+
     for my $testcase (@$testcases) {
         my $parse_result = extract_urls_with_indices($testcase->{text});
-        is $parse_result, [ map {
-            {
-                url => $_->{url},
-                indices => $_->{indices},
-            }
-        } @{$testcase->{expected}} ], $testcase->{description};
+        is $parse_result, [
+            map {
+                {
+                    url     => $_->{url},
+                    indices => $_->{indices},
+                }
+            } @{ $testcase->{expected} }
+            ],
+            $testcase->{description};
     }
 };
 
 subtest extract_cashtags => sub {
     my $testcases = $yaml->[0]->{tests}->{cashtags};
+
     for my $testcase (@$testcases) {
         my $parse_result = extract_cashtags($testcase->{text});
-        my $expected = $testcase->{expected};
+        my $expected     = $testcase->{expected};
         is(
             $parse_result,
             $expected,
@@ -179,6 +195,7 @@ subtest extract_cashtags => sub {
 
 subtest extract_cashtags_with_indices => sub {
     my $testcases = $yaml->[0]->{tests}->{cashtags_with_indices};
+
     for my $testcase (@$testcases) {
         my $parse_result = extract_cashtags_with_indices($testcase->{text});
         is(
