@@ -42,6 +42,8 @@ subtest hashtags => sub {
         my $validation_result = is_valid_hashtag($testcase->{text});
         is $validation_result, bool($testcase->{expected}), $testcase->{description};
     }
+
+    ok !is_valid_hashtag(''), 'Empty string is not a valid hashtag';
 };
 
 subtest lists => sub {
@@ -50,6 +52,8 @@ subtest lists => sub {
         my $validation_result = is_valid_list($testcase->{text});
         is $validation_result, bool($testcase->{expected}), $testcase->{description};
     }
+
+    ok !is_valid_list(''), 'Empty string is not a valid list';
 };
 
 subtest urls => sub {
@@ -58,6 +62,9 @@ subtest urls => sub {
         my $validation_result = is_valid_url($testcase->{text});
         is $validation_result, bool($testcase->{expected}), $testcase->{description};
     }
+
+    ok !is_valid_url(''), 'Empty string is not a valid URL';
+    ok !is_valid_url('https://こんにちは.みんな/', unicode_domains => 0), 'Unicode domain disabled';
 };
 
 subtest urls_without_protocol => sub {
@@ -66,6 +73,8 @@ subtest urls_without_protocol => sub {
         my $validation_result = is_valid_url($testcase->{text}, require_protocol => 0);
         is $validation_result, bool($testcase->{expected}), $testcase->{description} , $testcase->{text};
     }
+
+    ok !is_valid_url('', require_protocol => 0), 'Empty string is not a valid URL';
 };
 
 subtest usernames => sub {
@@ -74,6 +83,8 @@ subtest usernames => sub {
         my $validation_result = is_valid_username($testcase->{text});
         is $validation_result, bool($testcase->{expected}), $testcase->{description};
     }
+
+    ok !is_valid_username(''), 'Empty string is not a valid username';
 };
 
 subtest WeightedTweetsCounterTest => sub {
