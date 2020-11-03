@@ -5,12 +5,12 @@ use warnings;
 use utf8;
 use constant {
     DEFAULT_TCO_URL_LENGTHS => {
-        short_url_length => 23
+        short_url_length => 23,
     },
     MAX_WEIGHTENED_LENGTH => 280,
-    MAX_URL_LENGTH => 4096,
-    MAX_TCO_SLUG_LENGTH => 40,
-    URL_PROTOCOL_LENGTH => length 'https://',
+    MAX_URL_LENGTH        => 4096,
+    MAX_TCO_SLUG_LENGTH   => 40,
+    URL_PROTOCOL_LENGTH   => length 'https://',
 };
 use Carp qw(croak);
 use Exporter 'import';
@@ -23,7 +23,7 @@ use Twitter::Text::Regexp::Emoji;
 use Unicode::Normalize qw(NFC);
 
 our $VERSION = "0.03";
-our @EXPORT = (
+our @EXPORT  = (
     # Extraction
     qw(
         extract_cashtags
@@ -35,7 +35,7 @@ our @EXPORT = (
         extract_mentions_or_lists_with_indices
         extract_urls
         extract_urls_with_indices
-    ),
+        ),
     # Validation
     qw(
         is_valid_hashtag
@@ -44,18 +44,19 @@ our @EXPORT = (
         is_valid_url
         is_valid_username
         parse_tweet
-    ),
+        ),
 );
 
 sub extract_emoji_with_indices {
     my ($text) = @_;
     my $emoji = [];
+
     while ($text =~ /($Twitter::Text::Regexp::Emoji::valid_emoji)/g) {
-        my $emoji_text = $1;
+        my $emoji_text     = $1;
         my $start_position = $-[1];
-        my $end_position = $+[1];
+        my $end_position   = $+[1];
         push @$emoji, {
-            emoji => $emoji_text,
+            emoji   => $emoji_text,
             indices => [ $start_position, $end_position ],
         };
     }
@@ -69,6 +70,7 @@ sub _remove_overlapping_entities {
     # remove duplicates
     my $ret = [];
     my $prev;
+
     for my $entity (@$entities) {
         unless ($prev && $prev->{indices}->[1] > $entity->{indices}->[0]) {
             push @$ret, $entity;
@@ -80,7 +82,7 @@ sub _remove_overlapping_entities {
 
 sub extract_cashtags {
     my ($text) = @_;
-    return [ map { $_->{cashtag} } @{ extract_cashtags_with_indices($text) }];
+    return [ map { $_->{cashtag} } @{ extract_cashtags_with_indices($text) } ];
 }
 
 sub extract_cashtags_with_indices {
@@ -89,13 +91,14 @@ sub extract_cashtags_with_indices {
     return [] unless $text =~ /\$/;
 
     my $tags = [];
+
     while ($text =~ /($Twitter::Text::Regexp::valid_cashtag)/g) {
         my ($before, $dollar, $cash_text) = ($2, $3, $4);
         my $start_position = $-[3];
-        my $end_position = $+[4];
+        my $end_position   = $+[4];
         push @$tags, {
             cashtag => $cash_text,
-            indices => [$start_position, $end_position],
+            indices => [ $start_position, $end_position ],
         };
     }
 
@@ -109,7 +112,9 @@ sub extract_hashtags {
 
 sub extract_hashtags_with_indices {
     my ($text, $options) = @_;
+
     return [] unless $text =~ /[#＃]/;
+
     $options->{check_url_overlap} = 1 unless exists $options->{check_url_overlap};
 
     my $tags = [];
@@ -117,18 +122,20 @@ sub extract_hashtags_with_indices {
     while ($text =~ /($Twitter::Text::Regexp::valid_hashtag)/gp) {
         my ($before, $hash, $hash_text) = ($2, $3, $4);
         my $start_position = $-[3];
-        my $end_position = $+[4];
-        my $after = ${^POSTMATCH};
+        my $end_position   = $+[4];
+        my $after          = ${^POSTMATCH};
+
         unless ($after =~ $Twitter::Text::Regexp::end_hashtag_match) {
             push @$tags, {
                 hashtag => $hash_text,
-                indices => [$start_position, $end_position],
+                indices => [ $start_position, $end_position ],
             };
         }
     }
 
     if ($options->{check_url_overlap}) {
         my $urls = extract_urls_with_indices($text);
+
         if (@$urls) {
             $tags = [ @$tags, @$urls ];
             # remove duplicates
@@ -152,11 +159,12 @@ sub extract_mentioned_screen_names_with_indices {
     return [] unless $text;
 
     my $possible_screen_name = [];
+
     for my $mention_or_list (@{ extract_mentions_or_lists_with_indices($text) }) {
         next if length $mention_or_list->{list_slug};
         push @$possible_screen_name, {
             screen_name => $mention_or_list->{screen_name},
-            indices => $mention_or_list->{indices},
+            indices     => $mention_or_list->{indices},
         };
     }
 
@@ -169,16 +177,18 @@ sub extract_mentions_or_lists_with_indices {
     return [] unless $text =~ /[@＠]/;
 
     my $possible_entries = [];
+
     while ($text =~ /($Twitter::Text::Regexp::valid_mention_or_list)/gp) {
         my ($before, $at, $screen_name, $list_slug) = ($2, $3, $4, $5);
         my $start_position = $-[4] - 1;
-        my $end_position = $+[defined $list_slug ? 5 : 4];
-        my $after = ${^POSTMATCH};
+        my $end_position   = $+[ defined $list_slug ? 5 : 4 ];
+        my $after          = ${^POSTMATCH};
+
         unless ($after =~ $Twitter::Text::Regexp::end_mention_match) {
             push @$possible_entries, {
                 screen_name => $screen_name,
-                list_slug => $list_slug || '',
-                indices => [$start_position, $end_position],
+                list_slug   => $list_slug || '',
+                indices     => [ $start_position, $end_position ],
             };
         }
     }
@@ -202,21 +212,22 @@ sub extract_urls_with_indices {
     my $urls = [];
 
     while ($text =~ /($Twitter::Text::Regexp::valid_url)/g) {
-        my $before = $3;
-        my $url = $4;
+        my $before   = $3;
+        my $url      = $4;
         my $protocol = $5;
-        my $domain = $6;
-        my $path = $8;
+        my $domain   = $6;
+        my $path     = $8;
         my ($start, $end) = ($-[4], $+[4]);
 
         if (!$protocol) {
             next if !$options->{extract_url_without_protocol} || $before =~ $Twitter::Text::Regexp::invalid_url_without_protocol_preceding_chars;
             my $last_url;
+
             while ($domain =~ /($Twitter::Text::Regexp::valid_ascii_domain)/g) {
                 my $ascii_domain = $1;
                 next unless _is_valid_domain(length $url, $ascii_domain, $protocol);
                 $last_url = {
-                    url => $ascii_domain,
+                    url     => $ascii_domain,
                     indices => [ $start + $-[0], $start + $+[0] ],
                 };
                 push @$urls, $last_url;
@@ -241,7 +252,7 @@ sub extract_urls_with_indices {
             next unless _is_valid_domain(length $url, $domain, $protocol);
 
             push @$urls, {
-                url => $url,
+                url     => $url,
                 indices => [ $start, $end ],
             };
 
@@ -256,7 +267,8 @@ sub _is_valid_domain {
     croak 'invalid empty domain' unless $domain;
 
     my $original_domain_length = length $domain;
-    my $encoded_domain = eval { domain_to_ascii($domain) };
+    my $encoded_domain         = eval { domain_to_ascii($domain) };
+
     if ($@) {
         return 0;
     }
@@ -268,9 +280,12 @@ sub _is_valid_domain {
 
 sub is_valid_tweet {
     my ($text) = @_;
-    return parse_tweet($text, {
-        config => Twitter::Text::Configuration::V1,
-    })->{valid};
+    return parse_tweet(
+        $text,
+        {
+            config => Twitter::Text::Configuration::V1,
+        }
+    )->{valid};
 }
 
 sub is_valid_hashtag {
@@ -284,15 +299,12 @@ sub is_valid_hashtag {
 
 sub is_valid_list {
     my ($username_list) = @_;
-    return !!(
-        $username_list =~ /\A($Twitter::Text::Regexp::valid_mention_or_list)\z/
-        && $2 eq '' && $5 && length $5
-    );
+    return !!($username_list =~ /\A($Twitter::Text::Regexp::valid_mention_or_list)\z/ && $2 eq '' && $5 && length $5);
 }
 
 sub is_valid_url {
     my ($url, %opts) = @_;
-    my $unicode_domains = exists $opts{unicode_domains} ? $opts{unicode_domains} : 1;
+    my $unicode_domains  = exists $opts{unicode_domains}  ? $opts{unicode_domains}  : 1;
     my $require_protocol = exists $opts{require_protocol} ? $opts{require_protocol} : 1;
 
     return 0 unless $url;
@@ -301,14 +313,13 @@ sub is_valid_url {
     return 0 unless $url_parts && $url_parts eq $url;
 
     my ($scheme, $authorithy, $path, $query, $fragment) = ($2, $3, $4, $5, $6);
-    return 0 unless ((!$require_protocol ||
-                      (_valid_match($scheme, $Twitter::Text::Regexp::validate_url_scheme) && $scheme =~ /\Ahttps?\Z/i)) &&
-                    _valid_match($path, $Twitter::Text::Regexp::validate_url_path) &&
-                    _valid_match($query, $Twitter::Text::Regexp::validate_url_query, 1) &&
-                    _valid_match($fragment, $Twitter::Text::Regexp::validate_url_fragment, 1));
+    return 0 unless ((!$require_protocol || (_valid_match($scheme, $Twitter::Text::Regexp::validate_url_scheme) && $scheme =~ /\Ahttps?\Z/i))
+        && _valid_match($path,     $Twitter::Text::Regexp::validate_url_path)
+        && _valid_match($query,    $Twitter::Text::Regexp::validate_url_query,    1)
+        && _valid_match($fragment, $Twitter::Text::Regexp::validate_url_fragment, 1));
 
-    return ($unicode_domains && _valid_match($authorithy, $Twitter::Text::Regexp::validate_url_unicode_authority)) ||
-           (!$unicode_domains && _valid_match($authorithy, $Twitter::Text::Regexp::validate_url_authorithy));
+    return ($unicode_domains && _valid_match($authorithy, $Twitter::Text::Regexp::validate_url_unicode_authority))
+        || (!$unicode_domains && _valid_match($authorithy, $Twitter::Text::Regexp::validate_url_authorithy));
 }
 
 sub _valid_match {
@@ -336,33 +347,34 @@ sub parse_tweet {
 
     return _empty_parse_results() unless length $normalized_text > 0;
 
-    my $config = $options->{config} || Twitter::Text::Configuration::default_configuration;
-    my $scale = $config->{scale};
-    my $max_weighted_tweet_length = $config->{maxWeightedTweetLength};
+    my $config                           = $options->{config} || Twitter::Text::Configuration::default_configuration;
+    my $scale                            = $config->{scale};
+    my $max_weighted_tweet_length        = $config->{maxWeightedTweetLength};
     my $scaled_max_weighted_tweet_length = $max_weighted_tweet_length * $scale;
-    my $transformed_url_length = $config->{transformedURLLength} * $scale;
-    my $ranges = $config->{ranges};
+    my $transformed_url_length           = $config->{transformedURLLength} * $scale;
+    my $ranges                           = $config->{ranges};
 
-    my $url_entities = extract_urls_with_indices($normalized_text);
+    my $url_entities   = extract_urls_with_indices($normalized_text);
     my $emoji_entities = $config->{emojiParsingEnabled} ? extract_emoji_with_indices($normalized_text) : [];
 
     my $has_invalid_chars = 0;
-    my $weighted_count = 0;
-    my $offset = 0;
-    my $display_offset = 0;
-    my $valid_offset = 0;
+    my $weighted_count    = 0;
+    my $offset            = 0;
+    my $display_offset    = 0;
+    my $valid_offset      = 0;
 
     while ($offset < length $normalized_text) {
-        my $char_weight = $config->{defaultWeight};
+        my $char_weight   = $config->{defaultWeight};
         my $entity_length = 0;
 
         for my $url_entity (@$url_entities) {
             if ($url_entity->{indices}->[0] == $offset) {
                 $entity_length = $url_entity->{indices}->[1] - $url_entity->{indices}->[0];
                 $weighted_count += $transformed_url_length;
-                $offset += $entity_length;
+                $offset         += $entity_length;
                 $display_offset += $entity_length;
-                if ($weighted_count <= $scaled_max_weighted_tweet_length){
+
+                if ($weighted_count <= $scaled_max_weighted_tweet_length) {
                     $valid_offset += $entity_length;
                 }
                 # Finding a match breaks the loop
@@ -373,9 +385,10 @@ sub parse_tweet {
         for my $emoji_entity (@$emoji_entities) {
             if ($emoji_entity->{indices}->[0] == $offset) {
                 $entity_length = $emoji_entity->{indices}->[1] - $emoji_entity->{indices}->[0];
-                $weighted_count += $char_weight; # the default weight
-                $offset += $entity_length;
+                $weighted_count += $char_weight;     # the default weight
+                $offset         += $entity_length;
                 $display_offset += $entity_length;
+
                 if ($weighted_count <= $scaled_max_weighted_tweet_length) {
                     $valid_offset += $entity_length;
                 }
@@ -392,6 +405,7 @@ sub parse_tweet {
             for my $range (@$ranges) {
                 my ($chr) = unpack 'U', $code_point;
                 my ($range_start, $range_end) = ($range->{start}, $range->{end});
+
                 if ($range_start <= $chr && $chr <= $range_end) {
                     $char_weight = $range->{weight};
                     last;
@@ -402,7 +416,7 @@ sub parse_tweet {
 
             $has_invalid_chars = _contains_invalid($code_point) unless $has_invalid_chars;
             my $codepoint_length = length $code_point;
-            $offset += $codepoint_length;
+            $offset         += $codepoint_length;
             $display_offset += $codepoint_length;
 
             if (!$has_invalid_chars && ($weighted_count <= $scaled_max_weighted_tweet_length)) {
@@ -413,29 +427,29 @@ sub parse_tweet {
 
     my $normalized_text_offset = length($text) - length($normalized_text);
     my $scaled_weighted_length = $weighted_count / $scale;
-    my $is_valid = !$has_invalid_chars && ($scaled_weighted_length <= $max_weighted_tweet_length);
-    my $permilage = int($scaled_weighted_length * 1000 / $max_weighted_tweet_length);
+    my $is_valid               = !$has_invalid_chars && ($scaled_weighted_length <= $max_weighted_tweet_length);
+    my $permilage              = int($scaled_weighted_length * 1000 / $max_weighted_tweet_length);
 
     return +{
-        weighted_length => $scaled_weighted_length,
-        valid => $is_valid ? 1 : 0,
-        permillage => $permilage,
+        weighted_length     => $scaled_weighted_length,
+        valid               => $is_valid ? 1 : 0,
+        permillage          => $permilage,
         display_range_start => 0,
-        display_range_end => $display_offset + $normalized_text_offset - 1,
-        valid_range_start => 0,
-        valid_range_end => $valid_offset + $normalized_text_offset - 1,
+        display_range_end   => $display_offset + $normalized_text_offset - 1,
+        valid_range_start   => 0,
+        valid_range_end     => $valid_offset + $normalized_text_offset - 1,
     };
 }
 
 sub _empty_parse_results {
     return {
-        weighted_length => 0,
-        valid => 0,
-        permillage => 0,
+        weighted_length     => 0,
+        valid               => 0,
+        permillage          => 0,
         display_range_start => 0,
-        display_range_end => 0,
-        valid_range_start => 0,
-        valid_range_end => 0,
+        display_range_end   => 0,
+        valid_range_start   => 0,
+        valid_range_end     => 0,
     };
 }
 
