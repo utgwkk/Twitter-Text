@@ -319,7 +319,7 @@ sub is_valid_url {
         && _valid_match($fragment, $Twitter::Text::Regexp::validate_url_fragment, 1));
 
     return ($unicode_domains && _valid_match($authorithy, $Twitter::Text::Regexp::validate_url_unicode_authority))
-        || (!$unicode_domains && _valid_match($authorithy, $Twitter::Text::Regexp::validate_url_authorithy));
+        || (!$unicode_domains && _valid_match($authorithy, $Twitter::Text::Regexp::validate_url_authority));
 }
 
 sub _valid_match {
