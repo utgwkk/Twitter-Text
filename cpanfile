@@ -10,6 +10,10 @@ requires 'Path::Tiny';
 requires 'Unicode::Normalize';
 requires 'YAML::PP';
 
+on 'develop' => sub {
+    requires 'Devel::Cover';
+};
+
 on 'test' => sub {
     requires 'Test::More', '0.98';
     requires 'Test2::Plugin::GitHub::Actions::AnnotateFailedTest';
