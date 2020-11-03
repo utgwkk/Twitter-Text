@@ -1,6 +1,8 @@
 --add-newlines
 --add-semicolons
 --add-whitespace
+--block-brace-tightness=0
+--brace-tightness=1
 --break-at-old-comma-breakpoints
 --character-encoding=utf8
 --comma-arrow-breakpoints=1
