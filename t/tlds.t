@@ -8,9 +8,10 @@ my $yaml = load_yaml("tlds.yml");
 
 subtest generic => sub {
     my $testcases = $yaml->[0]->{tests}->{generic};
+
     for my $testcase (@$testcases) {
         my $parse_result = extract_urls($testcase->{text});
-        my $expected = $testcase->{expected};
+        my $expected     = $testcase->{expected};
         is(
             $parse_result,
             $expected,
@@ -21,9 +22,10 @@ subtest generic => sub {
 
 subtest country => sub {
     my $testcases = $yaml->[0]->{tests}->{country};
+
     for my $testcase (@$testcases) {
         my $parse_result = extract_urls($testcase->{text});
-        my $expected = $testcase->{expected};
+        my $expected     = $testcase->{expected};
         is(
             $parse_result,
             $expected,
