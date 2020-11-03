@@ -40,6 +40,23 @@ subtest extract_hashtags_with_indices => sub {
             $testcase->{description},
         );
     }
+
+    is(
+        extract_hashtags_with_indices(''),
+        [],
+        'No hashtags from empty string',
+    );
+
+    is(
+        extract_hashtags_with_indices('https://example.com/#hoge', { check_url_overlap => 0 }),
+        [
+            {
+                hashtag => 'hoge',
+                indices => [20, 25],
+            }
+        ],
+        "Don't check URL overlap",
+    );
 };
 
 subtest extract_mentions => sub {
@@ -64,6 +81,18 @@ subtest extract_mentions_with_indices => sub {
             $testcase->{description},
         );
     }
+
+    is(
+        extract_mentioned_screen_names_with_indices(''),
+        [],
+        'No screen names from empty string',
+    );
+
+    is(
+        extract_mentioned_screen_names_with_indices('@username/list'),
+        [],
+        'No screen names from @username/list',
+    );
 };
 
 subtest extract_mentions_or_lists_with_indices => sub {
@@ -76,6 +105,12 @@ subtest extract_mentions_or_lists_with_indices => sub {
             $testcase->{description},
         );
     }
+
+    is(
+        extract_mentions_or_lists_with_indices(''),
+        [],
+        'No mentions or lists from empty string',
+    );
 };
 
 subtest extract_urls => sub {
@@ -102,6 +137,18 @@ subtest extract_urls_with_indices => sub {
             }
         } @{$testcase->{expected}} ], $testcase->{description};
     }
+
+    is(
+        extract_urls_with_indices(''),
+        [],
+        'No URLs from empty string',
+    );
+
+    is(
+        extract_urls_with_indices('example.com', { without_protocol => 0 }),
+        [],
+        'force with protocol',
+    );
 };
 
 subtest extract_urls_with_directional_markers => sub {
@@ -140,6 +187,12 @@ subtest extract_cashtags_with_indices => sub {
             $testcase->{description},
         );
     }
+
+    is(
+        extract_cashtags_with_indices(''),
+        [],
+        'No cashtags from empty string',
+    );
 };
 
 done_testing;
