@@ -2,6 +2,9 @@ Revision history for Perl extension Twitter-Text
 
 {{$NEXT}}
 
+    - (incompatible change) Make internal-userd functions private (github PR: #23, #24)
+    - Fix typo in is_valid_url (always returned false when used with `unicode_domains => 0) (github PR: #30)
+
 0.03 2020-10-29T04:58:02Z
 
     - Write POD of exported functions (github PR: #18)
