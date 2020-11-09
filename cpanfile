@@ -17,6 +17,7 @@ on 'develop' => sub {
 on 'test' => sub {
     requires 'Test::More', '0.98';
     requires 'Test2::Plugin::GitHub::Actions::AnnotateFailedTest';
+    requires 'Test2::Plugin::NoWarnings';
     requires 'Test2::V0';
     requires 'Unicode::GCString';
 };
