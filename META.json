@@ -59,6 +59,7 @@
       "test" : {
          "requires" : {
             "Test2::Plugin::GitHub::Actions::AnnotateFailedTest" : "0",
+            "Test2::Plugin::NoWarnings" : "0",
             "Test2::V0" : "0",
             "Test::More" : "0.98",
             "Unicode::GCString" : "0"
