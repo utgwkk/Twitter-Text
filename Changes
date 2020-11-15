@@ -2,6 +2,8 @@ Revision history for Perl extension Twitter-Text
 
 {{$NEXT}}
 
+    - Require JSON instead of JSON::XS (github PR: #33)
+
 0.04 2020-11-03T15:02:38Z
 
     - (incompatible change) Make internal-userd functions private (github PR: #23, #24)
