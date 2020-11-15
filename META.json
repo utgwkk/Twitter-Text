@@ -46,7 +46,7 @@
             "Carp" : "0",
             "Exporter" : "0",
             "File::Share" : "0",
-            "JSON::XS" : "0",
+            "JSON" : "0",
             "List::Util" : "0",
             "List::UtilsBy" : "0",
             "Net::IDN::Encode" : "0",
