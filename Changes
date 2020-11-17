@@ -2,6 +2,8 @@ Revision history for Perl extension Twitter-Text
 
 {{$NEXT}}
 
+0.05_01 2020-11-17T00:01:22Z
+
     - Require JSON >= 2.90 (github PR: #34)
 
 0.05 2020-11-15T02:27:33Z
