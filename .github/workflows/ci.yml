@@ -36,4 +36,6 @@ jobs:
 
       - run: cpanm -L local --installdeps .
 
+      - run: cpanm -L local Test2::Plugin::GitHub::Actions::AnnotateFailedTest
+
       - run: prove -Ilocal/lib/perl5 -Ilib -lv t
