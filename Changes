@@ -2,6 +2,8 @@ Revision history for Perl extension Twitter-Text
 
 {{$NEXT}}
 
+0.06 2020-11-20T21:20:58Z
+
     - Remove /o modifier from regular expressions (github PR: #35)
     - Remove Test2::Plugin::GitHub::Actions::AnnotateFailedTest from dependency (github PR: #36, #38)
     - Revert changes of 0.05_01 (github PR: #37)
