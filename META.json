@@ -49,7 +49,7 @@
             "JSON" : "0",
             "List::Util" : "0",
             "List::UtilsBy" : "0",
-            "Net::IDN::Encode" : "0",
+            "Net::IDN::Encode" : "2.100",
             "Path::Tiny" : "0",
             "Unicode::Normalize" : "0",
             "YAML::PP" : "0",
