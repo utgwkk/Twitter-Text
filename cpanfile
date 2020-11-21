@@ -5,7 +5,7 @@ requires 'File::Share';
 requires 'JSON';
 requires 'List::Util';
 requires 'List::UtilsBy';
-requires 'Net::IDN::Encode';
+requires 'Net::IDN::Encode', '2.100';
 requires 'Path::Tiny';
 requires 'Unicode::Normalize';
 requires 'YAML::PP';
