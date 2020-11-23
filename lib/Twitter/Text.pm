@@ -3,6 +3,8 @@ use 5.012001;
 use strict;
 use warnings;
 use utf8;
+no if $^V lt v5.13.9, 'warnings', 'utf8';
+
 use constant {
     DEFAULT_TCO_URL_LENGTHS => {
         short_url_length => 23,

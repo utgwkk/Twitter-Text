@@ -3,6 +3,8 @@ package
 use strict;
 use warnings;
 use utf8;
+no if $^V lt v5.13.9, 'warnings', 'utf8';
+
 use Twitter::Text::Util qw(load_yaml);
 
 # internal use only, do not use this module directly.
