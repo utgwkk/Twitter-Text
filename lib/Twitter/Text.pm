@@ -239,7 +239,9 @@ sub extract_urls_with_indices {
             # last_url only contains domain. Need to add path and query if they exist.
             if ($path) {
                 # last_url was not added. Add it to urls here.
-                $last_url->{url} = $url =~ s/$domain/$last_url->{url}/re;
+                my $last_url_after = $url;
+                $last_url_after =~ s/$domain/$last_url->{url}/e;
+                $last_url->{url} = $last_url_after;
                 $last_url->{indices}->[1] = $end;
             }
         } else {
