@@ -1,6 +1,5 @@
 use Test2::V0;
 no if $^V lt v5.13.9, 'warnings', 'utf8';
-use if $^V ge v5.13.9, 'Test2::Plugin::NoWarnings';
 BEGIN {
     eval {
         require Test2::Plugin::GitHub::Actions::AnnotateFailedTest;
@@ -31,7 +30,12 @@ sub expected_parse_result {
     };
 }
 
+# XXX: "Unicode non-character 0xffff is illegal for interchange" warning occurs in YAML::PP::Lexer in Perl between v5.10.0 and v5.13.8
+# so we want to import Test2::Plugin::NoWarnings after reading YAML files.
+# https://perldoc.perl.org/5.14.2/perl5139delta#Selected-Bug-Fixes
 my $yaml = load_yaml("validate.yml");
+require Test2::Plugin::NoWarnings;
+Test2::Plugin::NoWarnings->import;
 
 subtest tweets => sub {
     my $testcases = $yaml->[0]->{tests}->{tweets};
