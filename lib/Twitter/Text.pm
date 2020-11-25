@@ -24,7 +24,7 @@ use Twitter::Text::Regexp;
 use Twitter::Text::Regexp::Emoji;
 use Unicode::Normalize qw(NFC);
 
-our $VERSION = "0.07";
+our $VERSION = "0.07_01";
 our @EXPORT  = (
     # Extraction
     qw(
