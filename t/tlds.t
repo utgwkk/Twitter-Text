@@ -1,4 +1,6 @@
 use Test2::V0;
+no if $^V lt v5.13.9, 'warnings', 'utf8';
+
 use Test2::Plugin::NoWarnings;
 BEGIN {
     eval {
