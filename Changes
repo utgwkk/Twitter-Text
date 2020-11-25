@@ -2,6 +2,8 @@ Revision history for Perl extension Twitter-Text
 
 {{$NEXT}}
 
+    - Set minimum Perl version to 5.10.0 (github PR: #42, #43)
+
 0.07 2020-11-21T08:41:12Z
 
     - Require Net::IDN::Encode >= 2.100 (github PR: #41)
