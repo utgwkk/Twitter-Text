@@ -1,4 +1,4 @@
-requires 'perl', '5.012000';
+requires 'perl', '5.010000';
 requires 'Carp';
 requires 'Exporter';
 requires 'File::Share';
