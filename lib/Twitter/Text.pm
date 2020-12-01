@@ -3,7 +3,7 @@ use 5.010000;
 use strict;
 use warnings;
 use utf8;
-no if $^V lt v5.13.9, 'warnings', 'utf8';
+no if $^V lt v5.13.9, 'warnings', 'utf8'; ## no critic (ValuesAndExpressions::ProhibitMismatchedOperators)
 
 use constant {
     DEFAULT_TCO_URL_LENGTHS => {
@@ -341,6 +341,7 @@ sub is_valid_username {
     return scalar(@$extracted) == 1 && $extracted->[0] eq substr($username, 1);
 }
 
+## no critic (Subroutines::ProhibitExcessComplexity)
 sub parse_tweet {
     my ($text, $options) = @_;
     # merge options
@@ -444,6 +445,7 @@ sub parse_tweet {
         valid_range_end     => $valid_offset + $normalized_text_offset - 1,
     };
 }
+## use critic
 
 sub _empty_parse_results {
     return {

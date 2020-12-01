@@ -1,7 +1,7 @@
 use Test2::V0;
-no if $^V lt v5.13.9, 'warnings', 'utf8';
+no if $^V lt v5.13.9, 'warnings', 'utf8'; ## no critic (ValuesAndExpressions::ProhibitMismatchedOperators)
 BEGIN {
-    eval {
+    eval { ## no critic (ErrorHandling::RequireCheckingReturnValueOfEval)
         require Test2::Plugin::GitHub::Actions::AnnotateFailedTest;
         Test2::Plugin::GitHub::Actions::AnnotateFailedTest->import;
     };
@@ -13,7 +13,7 @@ use Twitter::Text;
 
 sub expected_parse_result {
     my $testcase = shift;
-    hash {
+    return hash {
         field weighted_length => $testcase->{expected}->{weightedLength};
         field valid           => bool($testcase->{expected}->{valid});
         field permillage      => $testcase->{expected}->{permillage};
