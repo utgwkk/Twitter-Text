@@ -1,0 +1,25 @@
+severity = 3
+program-extensions = .pl .t
+
+[-Subroutines::ProhibitExplicitReturnUndef]
+
+[-ValuesAndExpressions::ProhibitConstantPragma]
+
+[-ValuesAndExpressions::ProhibitImplicitNewlines]
+
+[-RegularExpressions::RequireExtendedFormatting]
+
+[-Variables::ProhibitPackageVars]
+
+# we frequently use captures of regular expression match
+[-RegularExpressions::ProhibitCaptureWithoutTest]
+
+[-Modules::ProhibitAutomaticExportation]
+
+[-ControlStructures::ProhibitNegativeExpressionsInUnlessAndUntilConditions]
+
+[TestingAndDebugging::RequireUseStrict]
+equivalent_modules = Test2::V0
+
+[TestingAndDebugging::RequireUseWarnings]
+equivalent_modules = Test2::V0

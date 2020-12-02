@@ -39,3 +39,28 @@ jobs:
       - run: cpanm -L local Test2::Plugin::GitHub::Actions::AnnotateFailedTest
 
       - run: prove -Ilocal/lib/perl5 -Ilib -lv t
+
+  critic:
+    env:
+      perl-version: '5.32'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/cache@v2
+        with:
+          path: local
+          key: local-${{ runner.os }}-${{ env.perl-version }}-with-develop-${{ hashFiles('cpanfile') }}
+          restore-keys: |
+            local-${{ runner.os }}-${{ env.perl-version }}-
+            local-${{ runner.os }}-${{ env.perl-version }}-with-develop-
+
+      - name: Set up Perl
+        uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: ${{ env.perl-version }}
+
+      - run: cpanm -L local --with-develop --installdeps .
+
+      - run: |
+          perl -Ilocal/lib/perl5 ./local/bin/perlcritic --verbose '[%p] %m (Severity: %s) at %f line %l.\n' lib t

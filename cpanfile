@@ -12,6 +12,7 @@ requires 'YAML::PP';
 
 on 'develop' => sub {
     requires 'Devel::Cover';
+    requires 'Perl::Critic';
 };
 
 on 'test' => sub {
