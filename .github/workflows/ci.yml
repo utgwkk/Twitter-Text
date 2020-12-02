@@ -63,4 +63,4 @@ jobs:
       - run: cpanm -L local --with-develop --installdeps .
 
       - run: |
-          ./local/bin/perlcritic --verbose '[%p] %m (Severity: %s) at %f line %l.\n' lib t
+          perl -Ilocal/lib/perl5 ./local/bin/perlcritic --verbose '[%p] %m (Severity: %s) at %f line %l.\n' lib t
