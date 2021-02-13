@@ -318,4 +318,9 @@ our $validate_url_unencoded = qr{
     )?\z
 }ix;
 
+# ref:http://www.unicode.org/Public/UNIDATA/extracted/DerivedBidiClass.txt
+our $rtl_characters = qr/
+[\N{U+05BE}-\N{U+07FF}\N{U+FB1D}-\N{U+FDFD}\N{U+FE70}-\N{U+FEFC}]
+/ix;
+
 1;

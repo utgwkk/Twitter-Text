@@ -16,6 +16,7 @@ use constant {
 };
 use Carp qw(croak);
 use Exporter 'import';
+use HTML::Entities qw(encode_entities);
 use List::Util qw(min);
 use List::UtilsBy qw(nsort_by);
 use Net::IDN::Encode qw(domain_to_ascii);
@@ -46,6 +47,9 @@ our @EXPORT  = (
         is_valid_url
         is_valid_username
         parse_tweet
+        ),
+    qw(
+        auto_link
         ),
 );
 
@@ -464,6 +468,71 @@ sub _contains_invalid {
 
     return 0 if !$text || length $text == 0;
     return $text =~ qr/[$Twitter::Text::Regexp::INVALID_CHARACTERS]/;
+}
+
+sub auto_link {
+    my ($text) = @_;
+    my $mention_or_list = [ map {
+        +{
+            type => 'mention_or_list',
+            %$_
+        }
+    } @{ extract_mentioned_screen_names_with_indices($text) } ];
+    my $hashtags = [ map {
+        +{
+            type => 'hashtag',
+            %$_,
+        }
+    } @{ extract_hashtags_with_indices($text) } ];
+    my $cashtags = [ map {
+        +{
+            type => 'cashtag',
+            %$_,
+        }
+    } @{ extract_cashtags_with_indices($text) } ];
+    my $urls = [ map {
+        +{
+            type => 'url',
+            %$_,
+        }
+    } @{ extract_urls_with_indices($text, { extract_url_without_protocol => 0 }) }];
+    my $entities = _remove_overlapping_entities([ @$mention_or_list, @$hashtags, @$cashtags, @$urls ]);
+    push @$entities, +{
+        type => 'sentinel',
+        indices => [ length $text, length $text ],
+    };
+    my $ret_text = '';
+    my $offset = 0;
+
+    for my $entity (@$entities) {
+        my $type = $entity->{type};
+        my $start = $entity->{indices}->[0];
+        my $end = $entity->{indices}->[1];
+        $ret_text .= substr $text, $offset, $start - $offset;
+        $offset += $end - $offset;
+
+        if ($type eq 'mention_or_list') {
+            ...
+        } elsif ($type eq 'hashtag') {
+            my $hashtag = $entity->{hashtag};
+            my $hash = substr $text, $start, 1;
+            my $url = "https://twitter.com/search?q=%23$hashtag";
+            my $anchor_class = $hashtag =~ $Twitter::Text::Regexp::rtl_characters ? 'tweet-url hashtag rtl' : 'tweet-url hashtag';
+            $ret_text .= qq[<a href="$url" title="#$hashtag" class="$anchor_class">$hash$hashtag</a>];
+        } elsif ($type eq 'cashtag') {
+            ...
+        } elsif ($type eq 'url') {
+            my $url = $entity->{url};
+            my $encoded_url = encode_entities($url, '<>&"');
+            $ret_text .= qq[<a href=\"$encoded_url\">$encoded_url</a>];
+        } elsif ($type eq 'sentinel') {
+            # noop
+        } else {
+            croak "Unexpected entity type: $type";
+        }
+    }
+
+    return $ret_text;
 }
 
 1;
