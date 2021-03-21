@@ -78,7 +78,7 @@
          "web" : "https://github.com/utgwkk/Twitter-Text"
       }
    },
-   "version" : "0.07_01",
+   "version" : "0.08",
    "x_serialization_backend" : "JSON::PP version 4.02",
    "x_static_install" : 1
 }
