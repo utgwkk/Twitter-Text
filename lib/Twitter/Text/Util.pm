@@ -1,5 +1,4 @@
-package
-    Twitter::Text::Util; # hide from PAUSE
+package Twitter::Text::Util;
 use strict;
 use warnings;
 no if $^V lt v5.13.9, 'warnings', 'utf8'; ## no critic (ValuesAndExpressions::ProhibitMismatchedOperators)
