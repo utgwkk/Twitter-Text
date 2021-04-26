@@ -1,5 +1,4 @@
-package
-    Twitter::Text::Configuration; # hide from PAUSE
+package Twitter::Text::Configuration;
 use strict;
 use warnings;
 use JSON ();
