@@ -25,13 +25,12 @@ jobs:
         with:
           perl-version: ${{ matrix.perl-version }}
           install-modules-with: cpanm
+          install-modules: Test2::Plugin::GitHub::Actions::AnnotateFailedTest
 
       - name: Remove Perl Problem Matcher
         run: echo "::remove-matcher owner=perl::"
 
-      - run: cpanm -L local Test2::Plugin::GitHub::Actions::AnnotateFailedTest
-
-      - run: prove -Ilocal/lib/perl5 -Ilib -lv t
+      - run: prove -Ilib -lv t
 
   critic:
     env:
