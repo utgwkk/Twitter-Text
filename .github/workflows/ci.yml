@@ -22,22 +22,14 @@ jobs:
         with:
           submodules: true
 
-      - uses: actions/cache@v2
-        with:
-          path: local
-          key: local-${{ runner.os }}-${{ matrix.perl-version }}-${{ hashFiles('cpanfile') }}
-          restore-keys: |
-            local-${{ runner.os }}-${{ matrix.perl-version }}-
-
       - name: Set up Perl
         uses: shogo82148/actions-setup-perl@v1
         with:
           perl-version: ${{ matrix.perl-version }}
+          install-modules-with: cpanm
 
       - name: Remove Perl Problem Matcher
         run: echo "::remove-matcher owner=perl::"
-
-      - run: cpanm -L local --installdeps .
 
       - run: cpanm -L local Test2::Plugin::GitHub::Actions::AnnotateFailedTest
 
@@ -50,20 +42,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/cache@v2
-        with:
-          path: local
-          key: local-${{ runner.os }}-${{ env.perl-version }}-with-develop-${{ hashFiles('cpanfile') }}
-          restore-keys: |
-            local-${{ runner.os }}-${{ env.perl-version }}-
-            local-${{ runner.os }}-${{ env.perl-version }}-with-develop-
-
       - name: Set up Perl
         uses: shogo82148/actions-setup-perl@v1
         with:
           perl-version: ${{ env.perl-version }}
-
-      - run: cpanm -L local --with-develop --installdeps .
+          install-modules-with: cpanm
+          install-modules-args: --with-develop
 
       - uses: reviewdog/action-setup@v1
 
