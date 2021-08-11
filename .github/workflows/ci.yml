@@ -19,29 +19,18 @@ jobs:
     name: Perl ${{ matrix.perl-version }}
     steps:
       - uses: actions/checkout@v2
-        with:
-          submodules: true
-
-      - uses: actions/cache@v2
-        with:
-          path: local
-          key: local-${{ runner.os }}-${{ matrix.perl-version }}-${{ hashFiles('cpanfile') }}
-          restore-keys: |
-            local-${{ runner.os }}-${{ matrix.perl-version }}-
 
       - name: Set up Perl
         uses: shogo82148/actions-setup-perl@v1
         with:
           perl-version: ${{ matrix.perl-version }}
+          install-modules-with: cpanm
+          install-modules: Test2::Plugin::GitHub::Actions::AnnotateFailedTest
 
       - name: Remove Perl Problem Matcher
         run: echo "::remove-matcher owner=perl::"
 
-      - run: cpanm -L local --installdeps .
-
-      - run: cpanm -L local Test2::Plugin::GitHub::Actions::AnnotateFailedTest
-
-      - run: prove -Ilocal/lib/perl5 -Ilib -lv t
+      - run: prove -Ilib -lv t
 
   critic:
     env:
@@ -50,20 +39,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/cache@v2
-        with:
-          path: local
-          key: local-${{ runner.os }}-${{ env.perl-version }}-with-develop-${{ hashFiles('cpanfile') }}
-          restore-keys: |
-            local-${{ runner.os }}-${{ env.perl-version }}-
-            local-${{ runner.os }}-${{ env.perl-version }}-with-develop-
-
       - name: Set up Perl
         uses: shogo82148/actions-setup-perl@v1
         with:
           perl-version: ${{ env.perl-version }}
-
-      - run: cpanm -L local --with-develop --installdeps .
+          install-modules-with: cpanm
+          install-modules-args: --with-develop
 
       - uses: reviewdog/action-setup@v1
 
@@ -71,4 +52,4 @@ jobs:
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          perl -Ilocal/lib/perl5 ./local/bin/perlcritic --profile .perlcriticrc --verbose '%f:%l:%c:**%m**, near <code>%r</code>.<br>(Ref: [%p](https://metacpan.org/pod/Perl::Critic::Policy::%p))\n' lib t | reviewdog -efm=%f:%l:%c:%m -name=perlcritic -reporter=github-pr-review
+          perlcritic --profile .perlcriticrc --verbose '%f:%l:%c:**%m**, near <code>%r</code>.<br>(Ref: [%p](https://metacpan.org/pod/Perl::Critic::Policy::%p))\n' lib t | reviewdog -efm=%f:%l:%c:%m -name=perlcritic -reporter=github-pr-review
