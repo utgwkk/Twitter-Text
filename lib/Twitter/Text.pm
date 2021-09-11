@@ -37,7 +37,7 @@ our @EXPORT  = (
         extract_mentions_or_lists_with_indices
         extract_urls
         extract_urls_with_indices
-        ),
+    ),
     # Validation
     qw(
         is_valid_hashtag
@@ -46,7 +46,7 @@ our @EXPORT  = (
         is_valid_url
         is_valid_username
         parse_tweet
-        ),
+    ),
 );
 
 sub extract_emoji_with_indices {

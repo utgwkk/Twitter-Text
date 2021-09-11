@@ -1,5 +1,6 @@
 use Test2::V0;
 no if $^V lt v5.13.9, 'warnings', 'utf8'; ## no critic (ValuesAndExpressions::ProhibitMismatchedOperators)
+
 BEGIN {
     eval { ## no critic (ErrorHandling::RequireCheckingReturnValueOfEval)
         require Test2::Plugin::GitHub::Actions::AnnotateFailedTest;
@@ -82,7 +83,7 @@ subtest urls => sub {
     }
 
     ok !is_valid_url(''), 'Empty string is not a valid URL';
-    ok !is_valid_url('https://こんにちは.みんな/', unicode_domains => 0), 'Unicode domain disabled (invalid)';
+    ok !is_valid_url('https://こんにちは.みんな/',  unicode_domains => 0), 'Unicode domain disabled (invalid)';
     ok is_valid_url('https://example.com/', unicode_domains => 0), 'Unicode domain disabled (valid)';
 };
 

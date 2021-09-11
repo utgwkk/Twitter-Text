@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 use Test::More 0.98;
+
 BEGIN {
     eval { ## no critic (ErrorHandling::RequireCheckingReturnValueOfEval)
         require Test2::Plugin::GitHub::Actions::AnnotateFailedTest;
