@@ -19,4 +19,5 @@
 --no-space-for-semicolon
 --paren-tightness=2
 --quiet
+--static-side-comments
 --trim-qw
